@@ -17,8 +17,9 @@ public class Player : MonoBehaviour
     Vector3 direction;
     float thruster_y; // Variable to amplify the ship's thrusters during forward/up movement
     float _thrustersAnimation; // Variable to amplify the thrusters animation 'flicker'
+    [SerializeField] bool _thrusters_always_on;
 
-[SerializeField] GameObject _thruster_left;
+    [SerializeField] GameObject _thruster_left;
     [SerializeField] GameObject _thruster_right;
     [SerializeField] GameObject _thrusters;
 
@@ -183,12 +184,17 @@ public class Player : MonoBehaviour
         transform.Translate(direction * _speed * Time.deltaTime);
 
 
-        ////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////
         /// Thrusters Left & Right (not MAIN THRUSTER)
         // Use the verticalInput 'W' or UpArrow * 1.75 as Thruster localScale multiplier
-        thruster_y = verticalInput * .6f;
 
-        if (verticalInput > 0.20f)
+        // TODO: For Scene capturing/recording only delete, along with _thrusters_always_on bool
+        if (_thrusters_always_on)
+            thruster_y = 1 * .6f;
+        else
+            thruster_y = verticalInput * .6f;
+
+        if (_thrusters_always_on || verticalInput > 0.20f)
         {
             // Reset Thrusters/Afterburners to originalLocalScale
             _thruster_left.transform.localScale = _originalThrustersLocalScale;
