@@ -26,6 +26,7 @@ public class PlayerShields : MonoBehaviour
 
     public void Damage()
     {
+        //Player.instance.PlayExplosion();
         if (_shieldActive)
         {
             //_sound.clip = _explosionSFX;

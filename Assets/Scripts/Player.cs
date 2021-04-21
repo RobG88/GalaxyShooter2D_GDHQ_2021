@@ -57,6 +57,16 @@ public class Player : MonoBehaviour
     float _yScreenClampUpper = 0;
     float _yScreenClampLower = -7f; // offical game = -3.8f;
 
+
+    ///////////////////////////////
+    /// AUDIO VARIABLES
+    /// 
+    [SerializeField] AudioClip _laserSFX;
+    [SerializeField] AudioClip _PowerUpSFX;
+    [SerializeField] AudioClip _explosion;
+    [SerializeField] GameObject PlayerFinalExplosionPE;
+    AudioSource _audioSource; // Audio source for laser, player damage & powerups
+
     /// 
     /// POWERUP VARIABLES
     /// 
@@ -111,6 +121,7 @@ public class Player : MonoBehaviour
     {
         instance = this;
         _anim = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
     }
@@ -120,12 +131,14 @@ public class Player : MonoBehaviour
         _playerLives = 3;
         isGameOver = false;
         transform.position = new Vector3(0, -5, 0); // offical game (0, -3.5f, 0);
+
         _originalThrustersLocalScale = _thruster_left.transform.localScale;
         ////transform.position = new Vector3(0.3834784f, -5, 0); // exactly fire two lasers into one enemy
-        UI.instance.DisplayLives(_playerLives);
-        UI.instance.DisplayShipWrapStatus();
 
         _speed = _spaceshipSpeed; // initialize Ship/Player speed
+
+        UI.instance.DisplayLives(_playerLives);
+        UI.instance.DisplayShipWrapStatus();
 
         /// Thrusters Left & Right
         /// Thrusters Damage
@@ -247,11 +260,15 @@ public class Player : MonoBehaviour
         {
             GameObject laser1 = Instantiate(_laserPrefab, _gunLeft.position, Quaternion.identity);
             GameObject laser2 = Instantiate(_laserPrefab, _gunRight.position, Quaternion.identity);
+            _audioSource.pitch = Random.Range(2.5f, 3.0f);
         }
         else
         {
             GameObject tripleshot = Instantiate(_tripleshotPrefab, _gunCenter.position, Quaternion.identity);
+            _audioSource.pitch = Random.Range(0.85f, 1.15f);
         }
+
+        _audioSource.PlayOneShot(_laserSFX, 0.50f);
     }
 
     public void FireLaserCanon()
@@ -260,34 +277,13 @@ public class Player : MonoBehaviour
         FireLaser();
     }
 
-    /*
-    void Damage()
-    {
-        if (_cheat_GODMODE) return;
-
-        if (_shieldActive)
-        {
-            _playerShield.Damage();
-        }
-        else
-        {
-            _playerLives--;
-
-            if (_playerLives == 0)
-            {
-                PlayerDeath();
-            }
-
-            UI.instance.DisplayLives(_playerLives);
-        }
-    }
-    */
-
     ///
     /// SHIELDS - SHIP DAMAGE ROUTINE
     /// 
     public void Damage() // Ship & Shield damage
     {
+        if (_cheat_GODMODE) return;
+
         if (_shieldBonus == 3 && !_bonusLifeOncePerLevel) // Enable 3x Shield Bonus 'hit'
         {
             _bonusLife = true;
@@ -368,6 +364,7 @@ public class Player : MonoBehaviour
     {
         _damagedLeft = true;
         _shipDamageLeft.SetActive(true);
+        _audioSource.PlayOneShot(_explosion);
         //_animShipDamageLeft.SetTrigger("PlayerDamageLeft");
     }
 
@@ -375,6 +372,7 @@ public class Player : MonoBehaviour
     {
         _damagedRight = true;
         _shipDamageRight.SetActive(true);
+        _audioSource.PlayOneShot(_explosion);
         //_animShipDamageRight.SetTrigger("PlayerDamageRight");
     }
 
@@ -383,6 +381,8 @@ public class Player : MonoBehaviour
     {
         _spriteRenderer.enabled = false;
         _boxCollider2D.enabled = false;
+
+        _audioSource.PlayOneShot(_explosion);
 
         GameManager.instance.OnPlayerDeath();
         isGameOver = true;
@@ -537,6 +537,8 @@ public class Player : MonoBehaviour
                           ///
                   */
         }
+        _audioSource.pitch = 1.0f;
+        _audioSource.PlayOneShot(_PowerUpSFX);
     }
 
     float CalculateShipSpeed() // Ship's speed = _spaceshipSpeed, calc PowerUp, damage 
@@ -581,5 +583,10 @@ public class Player : MonoBehaviour
     {
         _shieldActive = false;
         _shield.SetActive(false);
+    }
+
+    public void PlayExplosion()
+    {
+        _audioSource.PlayOneShot(_explosion);
     }
 }
