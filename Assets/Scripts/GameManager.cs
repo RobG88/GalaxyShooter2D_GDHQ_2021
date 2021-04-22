@@ -8,7 +8,6 @@ using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance;
 
     public static bool _playerIsAlive;

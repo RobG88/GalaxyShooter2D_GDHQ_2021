@@ -137,8 +137,8 @@ public class Player : MonoBehaviour
 
         _speed = _spaceshipSpeed; // initialize Ship/Player speed
 
-        UI.instance.DisplayLives(_playerLives);
-        UI.instance.DisplayShipWrapStatus();
+        UIManager.instance.DisplayLives(_playerLives);
+        UIManager.instance.DisplayShipWrapStatus();
 
         /// Thrusters Left & Right
         /// Thrusters Damage
@@ -179,7 +179,7 @@ public class Player : MonoBehaviour
         // G = Enable GOD mode
         //
         //if (Input.GetKeyDown(KeyCode.Q)) { _wrapShip = !_wrapShip; }
-        if (Input.GetKeyDown(KeyCode.Q)) { _wrapShip = !_wrapShip; UI.instance.SetCheatKey(_wrapShip); UI.instance.DisplayShipWrapStatus(); }
+        if (Input.GetKeyDown(KeyCode.Q)) { _wrapShip = !_wrapShip; UIManager.instance.SetCheatKey(_wrapShip); UIManager.instance.DisplayShipWrapStatus(); }
         if (Input.GetKeyDown(KeyCode.G)) { _cheat_GODMODE = !_cheat_GODMODE; }
         if (Input.GetKeyDown(KeyCode.T)) { _cheat_TRIPLE = !_cheat_TRIPLE; _powerUp_Tripleshot = _cheat_TRIPLE; }
 
@@ -306,7 +306,7 @@ public class Player : MonoBehaviour
             {
                 _playerLives--;
                 if (_playerLives < 0) _playerLives = 0;
-                UI.instance.DisplayLives(_playerLives);
+                UIManager.instance.DisplayLives(_playerLives);
                 _bonusLifeOncePerLevel = true;
                 _shieldBonus = 0;
                 //UIManager.Instance.UpdateShieldBonusUI(_shieldBonus);
@@ -386,7 +386,7 @@ public class Player : MonoBehaviour
 
         GameManager.instance.OnPlayerDeath();
         isGameOver = true;
-        UI.instance.GameOver(isGameOver);
+        UIManager.instance.GameOver(isGameOver);
         WaveSpawner.instance.OnPlayerDeath();
         Destroy(this.gameObject, 0.25f);
     }
@@ -419,7 +419,7 @@ public class Player : MonoBehaviour
 
     IEnumerator ActivatePowerupTripleshot()
     {
-        UI.instance.ActiveTripleShotUI();
+        UIManager.instance.ActiveTripleShotUI();
         _powerUp_Tripleshot = true;
         yield return new WaitForSeconds(5f);
         _powerUp_Tripleshot = false;
@@ -432,7 +432,7 @@ public class Player : MonoBehaviour
 
     IEnumerator ActivatePowerupSpeedBoost()
     {
-        UI.instance.ActiveSpeedBoostUI();
+        UIManager.instance.ActiveSpeedBoostUI();
         _speedActive = true;
         yield return new WaitForSeconds(5f);
         _speedActive = false;
@@ -454,7 +454,7 @@ public class Player : MonoBehaviour
 
     IEnumerator ActivatePowerupShields()
     {
-        UI.instance.ActiveShieldsUI();
+        UIManager.instance.ActiveShieldsUI();
         _shieldActive = true;
         yield return new WaitForSeconds(5f);
         _shieldActive = false;
@@ -576,7 +576,7 @@ public class Player : MonoBehaviour
     public void AddScore(int scoreAmount) // Update score, send to UI
     {
         _score += scoreAmount;
-        UI.instance.UpdateScore(_score);
+        UIManager.instance.UpdateScore(_score);
     }
 
     void DropShield()

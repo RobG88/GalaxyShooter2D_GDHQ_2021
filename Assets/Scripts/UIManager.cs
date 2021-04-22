@@ -29,6 +29,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] Timer Timer_PowerUp_Speed;
     [SerializeField] Timer Timer_PowerUp_Shields;
 
+    [SerializeField] GameObject _optionsMenu;
+    [SerializeField] GameObject _pausePanel;
+
 
     string textToBlink;
 
@@ -48,7 +51,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             ActiveTripleShotUI();
         }
@@ -210,5 +213,21 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(.1f);
         }
         gameoverText.color = Color.red;
+    }
+
+
+    /////////////////////////////////////////////////////////////////
+    /// Menu Methods
+    /// 
+    public void OptionsMenu()
+    {
+        _pausePanel.SetActive(false);
+        _optionsMenu.SetActive(true);
+    }
+
+    public void OptionsBackButton()
+    {
+        _optionsMenu.SetActive(false);
+        _pausePanel.SetActive(true);
     }
 }

@@ -69,7 +69,7 @@ public class WaveSpawner : MonoBehaviour
         {
             if (_spawnState != SpawnState.SPAWNING)
             {
-                UI.instance.WaveCountdownEnableUI(_beginCountdown, (int)_waveCountdown, waves[_nextWave].name);
+                UIManager.instance.WaveCountdownEnableUI(_beginCountdown, (int)_waveCountdown, waves[_nextWave].name);
                 // Begin spawning the wave
                 StartCoroutine(SpawnWave(waves[_nextWave]));
             }
@@ -79,14 +79,14 @@ public class WaveSpawner : MonoBehaviour
             // Countdown
             if (_beginCountdown)
             {
-                UI.instance.DisplayLevel(_nextWave + 1);
-                UI.instance.WaveCountdownEnableUI(_beginCountdown, (int)_waveCountdown, waves[_nextWave].name);
+                UIManager.instance.DisplayLevel(_nextWave + 1);
+                UIManager.instance.WaveCountdownEnableUI(_beginCountdown, (int)_waveCountdown, waves[_nextWave].name);
                 _beginCountdown = false;
             }
 
             if (_waveCountdown > 0)
             {
-                UI.instance.WaveCountdown((int)_waveCountdown);
+                UIManager.instance.WaveCountdown((int)_waveCountdown);
             }
 
             _waveCountdown -= Time.deltaTime;
@@ -104,7 +104,7 @@ public class WaveSpawner : MonoBehaviour
         {
             _currentEnemies++;
             SpawnEnemy(_wave.enemyPrefab);
-            UI.instance.DisplayEnemies(_currentEnemies, _wave.enemyCount);
+            UIManager.instance.DisplayEnemies(_currentEnemies, _wave.enemyCount);
             // yield return new WaitForSeconds(1f / _wave.spawnRate);
             yield return new WaitForSeconds(_wave.delayBetweenEnemySpawns);
 
@@ -164,7 +164,7 @@ public class WaveSpawner : MonoBehaviour
     public void EnemyDeath()
     {
         _currentEnemies--;
-        UI.instance.DisplayEnemies(_currentEnemies, waves[_nextWave].enemyCount);
+        UIManager.instance.DisplayEnemies(_currentEnemies, waves[_nextWave].enemyCount);
     }
 
     public void OnPlayerDeath()
