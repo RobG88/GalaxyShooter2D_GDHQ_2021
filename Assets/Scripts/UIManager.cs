@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class UIManager : MonoBehaviour
 {
@@ -31,7 +33,6 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] GameObject _optionsMenu;
     [SerializeField] GameObject _pausePanel;
-
 
     string textToBlink;
 
@@ -229,5 +230,13 @@ public class UIManager : MonoBehaviour
     {
         _optionsMenu.SetActive(false);
         _pausePanel.SetActive(true);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        //SceneManager.LoadScene("MainMenu"); // Scene 0 = 'MainMenu'
+        //SceneManager.LoadSceneAsync(2);
+        GameManager.instance.PauseGame();
+        SceneManager.LoadScene(2);
     }
 }

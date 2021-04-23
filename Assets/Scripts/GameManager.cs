@@ -88,4 +88,9 @@ public class GameManager : MonoBehaviour
         _playerIsAlive = false;
         _isGameOver = true;
     }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu"); // Scene 0 = 'MainMenu'
+    }
 }

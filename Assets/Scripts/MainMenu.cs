@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Timeline;
 
 public class MainMenu : MonoBehaviour
 {
@@ -14,12 +15,11 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject GDHQSheild;
     //[SerializeField] GameObject LoadingProgress;
     [SerializeField] Slider SceneLoadingSlider;
-    public void LoadGame()
-    {
-        SceneManager.LoadScene(1); // Start Game
-        //SceneManager.LoadScene("GalaxyShooterDemo");
-    }
 
+    void PlayCredits()
+    {
+        //StartCoroutine(StartTitleSequence());
+    }
     IEnumerator Start()
     {
         yield return new WaitForSeconds(4f);
