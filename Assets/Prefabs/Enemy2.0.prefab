@@ -19585,7 +19585,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemySpeed: 4
   _scoreValue: 10
-  _enemyInvaderExplosion: {fileID: 7834325887832118455, guid: ccae19aef2571ea40b4db44836d00025, type: 3}
   _sfx: {fileID: 5790738569388071075}
   CHEAT_LINE_THEM_UP: 0
 --- !u!82 &4432303638864079081
@@ -19597,7 +19596,7 @@ AudioSource:
   m_GameObject: {fileID: 8618811156043889136}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -7485775356585051766, guid: 0b6f592e6f31cb64c8b8c217966fcc4b, type: 2}
   m_audioClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.25

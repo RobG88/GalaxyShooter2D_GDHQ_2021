@@ -24,14 +24,18 @@ public class AudioManager : MonoBehaviour
 
     public AudioMixer _MasterMixer;
 
+    [SerializeField] Slider _Master_Volume_Slider;
     [SerializeField] Slider _SFX_Volume_Slider;
     [SerializeField] Slider _Music_Volume_Slider;
 
+    [SerializeField] string _Master_Exposed_parameter;
     [SerializeField] string _SFX_Exposed_parameter;
-    [SerializeField] string _BGM_Exposed_parameter;
+    [SerializeField] string _Music_Exposed_parameter;
 
-    [SerializeField] float _playerPrefBGMusic_Volume;
+    [SerializeField] float _playerPrefMaster_Volume;
+    [SerializeField] float _playerPrefMusic_Volume;
     [SerializeField] float _playerPrefSFX_Volume;
+
     private void Awake()
     {
         instance = this;
@@ -40,33 +44,36 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         // The getting & setting AudioMixer needs to happen in Start(), can not be Awake
+        _playerPrefMaster_Volume = PlayerPrefs.GetFloat(_Master_Exposed_parameter);
         _playerPrefSFX_Volume = PlayerPrefs.GetFloat(_SFX_Exposed_parameter);
-        _playerPrefBGMusic_Volume = PlayerPrefs.GetFloat(_BGM_Exposed_parameter);
-
+        _playerPrefMusic_Volume = PlayerPrefs.GetFloat(_Music_Exposed_parameter);
+        _Master_Volume_Slider.value = _playerPrefMaster_Volume;
+        //_Master_Volume_Slider.value = PlayerPrefs.GetFloat(_Master_Exposed_parameter); //, _Master_Volume_Slider.value);
         _SFX_Volume_Slider.value = PlayerPrefs.GetFloat(_SFX_Exposed_parameter);
-        _Music_Volume_Slider.value = PlayerPrefs.GetFloat(_BGM_Exposed_parameter);
+        _Music_Volume_Slider.value = PlayerPrefs.GetFloat(_Music_Exposed_parameter);
 
-        SetFXVol(_playerPrefSFX_Volume);
-        SetBGMusicVol(_playerPrefBGMusic_Volume);
+        ////SetMasterVolume(_playerPrefMaster_Volume);
+        //SetFXVol(_playerPrefSFX_Volume);
+        //SetBGMusicVol(_playerPrefMusic_Volume);
     }
 
     public void SetMasterVolume(Slider volume)
     {
-        _MasterMixer.SetFloat("MasterVolume", volume.value);
+        _MasterMixer.SetFloat(_Master_Exposed_parameter, volume.value);
     }
 
     public void SetFXVol(float sfxLevel)
     {
         //UIManager.instance.EnableDisableSFXIcon(sfxLevel <= _SFX_Volume_Slider.minValue);
         _MasterMixer.SetFloat(_SFX_Exposed_parameter, sfxLevel);
-        PlayerPrefs.SetFloat(_SFX_Exposed_parameter, sfxLevel);
+        //PlayerPrefs.SetFloat(_SFX_Exposed_parameter, sfxLevel);
     }
 
     public void SetBGMusicVol(float BGMusicLevel)
     {
         //UIManager.instance.EnableDisableBGMIcon(BGMusicLevel <= _Music_Volume_Slider.minValue);
-        PlayerPrefs.SetFloat(_BGM_Exposed_parameter, BGMusicLevel);
-        AudioManager.instance._MasterMixer.SetFloat("BackgroundMusicVolume", Mathf.Log10(BGMusicLevel) * 20);
+        //PlayerPrefs.SetFloat(_Music_Exposed_parameter, BGMusicLevel);
+        _MasterMixer.SetFloat(_Music_Exposed_parameter, Mathf.Log10(BGMusicLevel) * 20);
     }
 }
 /*

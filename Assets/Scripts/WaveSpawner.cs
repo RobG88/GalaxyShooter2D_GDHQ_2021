@@ -30,7 +30,9 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] GameObject[] _powerUpPrefabs;
     [SerializeField] GameObject _powerUpContainer;
     float _waitTimeBetweenPowerUpSpawns;
-    [SerializeField]float _spawnNextPowerup = -1.0f;  // game time value, tracking when a powerup can be spawned
+    [SerializeField] float _spawnNextPowerup = -1.0f;  // game time value, tracking when a powerup can be spawned
+    [SerializeField] float _minPowerUpSpawnStart = 5f;
+    [SerializeField] float _maxPowerUpSpawnStart = 8f;
 
 
     float _spawnPowerRate; // random time between min & max;
@@ -174,11 +176,11 @@ public class WaveSpawner : MonoBehaviour
 
     public IEnumerator SpawnPowerUpRoutine()
     {
-        yield return new WaitForSeconds(_delayAfterWaveStarts + Random.Range(4.0f, 8.0f));
+        yield return new WaitForSeconds(_delayAfterWaveStarts + Random.Range(4.0f, 5.0f));
 
         while (GameManager._playerIsAlive)
         {
-            _waitTimeBetweenPowerUpSpawns = Random.Range(9.0f, 15.0f);
+            _waitTimeBetweenPowerUpSpawns = Random.Range(_minPowerUpSpawnStart, _maxPowerUpSpawnStart);
             int _RNDPowerUp = Random.Range(0, _powerUpPrefabs.Length);
 
             // TODO: if Shield is active do not spawn another

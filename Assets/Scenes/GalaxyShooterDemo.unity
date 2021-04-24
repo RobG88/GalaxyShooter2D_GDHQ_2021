@@ -211,6 +211,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 26348960}
+  - component: {fileID: 26348959}
+  - component: {fileID: 26348961}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -218,6 +220,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &26348959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26348958}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306482b09200b12448fb835326a08571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _MasterMixer: {fileID: 24100000, guid: 0b6f592e6f31cb64c8b8c217966fcc4b, type: 2}
+  _Master_Volume_Slider: {fileID: 799736597}
+  _SFX_Volume_Slider: {fileID: 719484204}
+  _Music_Volume_Slider: {fileID: 912074810}
+  _Master_Exposed_parameter: MasterVolume
+  _SFX_Exposed_parameter: SFXVolume
+  _Music_Exposed_parameter: MusicVolume
+  _playerPrefMaster_Volume: 0
+  _playerPrefMusic_Volume: 0
+  _playerPrefSFX_Volume: 0
 --- !u!4 &26348960
 Transform:
   m_ObjectHideFlags: 0
@@ -233,6 +257,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &26348961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26348958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a208df367118904c88986d3af61af70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _volumeParameterMaster: MasterVolume
+  _volumeParameterMusic: MusicVolume
+  _volumeParameterSFX: SFXVolume
+  _mixer: {fileID: 24100000, guid: 0b6f592e6f31cb64c8b8c217966fcc4b, type: 2}
+  _sliderMaster: {fileID: 799736597}
+  _sliderMusic: {fileID: 912074810}
+  _sliderSFX: {fileID: 719484204}
+  _multiplier: 20
+  _Icon: {fileID: 111764986}
+  _redIcon: {fileID: 641920234}
 --- !u!1 &28588675
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,7 +1346,7 @@ MonoBehaviour:
   _volumeParameter: SFXVolume
   _mixer: {fileID: 24100000, guid: 0b6f592e6f31cb64c8b8c217966fcc4b, type: 2}
   _slider: {fileID: 719484204}
-  _multiplier: 30
+  _multiplier: 20
   _Icon: {fileID: 382858084}
   _redIcon: {fileID: 401480715}
 --- !u!1 &382858084
@@ -8209,7 +8255,7 @@ MonoBehaviour:
   m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.8
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9322,8 +9368,8 @@ RectTransform:
   m_Father: {fileID: 861598112}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.79998, y: 0}
-  m_AnchorMax: {x: 0.79998, y: 1}
+  m_AnchorMin: {x: 0.49995, y: 0}
+  m_AnchorMax: {x: 0.49995, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10085,7 +10131,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.79998, y: 1}
+  m_AnchorMax: {x: 0.49995, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10725,7 +10771,7 @@ MonoBehaviour:
   _volumeParameter: MusicVolume
   _mixer: {fileID: 24100000, guid: 0b6f592e6f31cb64c8b8c217966fcc4b, type: 2}
   _slider: {fileID: 912074810}
-  _multiplier: 30
+  _multiplier: 20
   _Icon: {fileID: 111764986}
   _redIcon: {fileID: 641920234}
 --- !u!1 &1411655322
@@ -12506,27 +12552,27 @@ MonoBehaviour:
   waves:
   - name: Reinforcements Attack!
     enemyPrefab: {fileID: 8618811156043889136, guid: af57a517c2a794640853c20bcecc7150, type: 3}
-    enemyCount: 1
+    enemyCount: 5
     spawnRate: 0
     delayBetweenEnemySpawns: 0.1
   - name: The Reinforcements
     enemyPrefab: {fileID: 8618811156043889136, guid: af57a517c2a794640853c20bcecc7150, type: 3}
-    enemyCount: 2
+    enemyCount: 7
     spawnRate: 0
     delayBetweenEnemySpawns: 0.25
   - name: '!!!Invasion!!!'
     enemyPrefab: {fileID: 8618811156043889136, guid: af57a517c2a794640853c20bcecc7150, type: 3}
-    enemyCount: 3
+    enemyCount: 11
     spawnRate: 0
     delayBetweenEnemySpawns: 0.2
   - name: The Armada
     enemyPrefab: {fileID: 8618811156043889136, guid: af57a517c2a794640853c20bcecc7150, type: 3}
-    enemyCount: 4
+    enemyCount: 25
     spawnRate: 0
     delayBetweenEnemySpawns: 0.25
   - name: The Enslaught
     enemyPrefab: {fileID: 8618811156043889136, guid: af57a517c2a794640853c20bcecc7150, type: 3}
-    enemyCount: 5
+    enemyCount: 0
     spawnRate: 0
     delayBetweenEnemySpawns: 0.25
   _timeBetweenWaves: 2
@@ -12538,6 +12584,8 @@ MonoBehaviour:
   - {fileID: 5647977108281404022, guid: 7f0d9e37f1e20854f8d7234628f825f1, type: 3}
   _powerUpContainer: {fileID: 1314596240}
   _spawnNextPowerup: -1
+  _minPowerUpSpawnStart: 5
+  _maxPowerUpSpawnStart: 8
 --- !u!4 &1897445044
 Transform:
   m_ObjectHideFlags: 0
@@ -12861,9 +12909,9 @@ MonoBehaviour:
   _volumeParameter: MasterVolume
   _mixer: {fileID: 24100000, guid: 0b6f592e6f31cb64c8b8c217966fcc4b, type: 2}
   _slider: {fileID: 799736597}
-  _multiplier: 30
-  _Icon: {fileID: 0}
-  _redIcon: {fileID: 0}
+  _multiplier: 20
+  _Icon: {fileID: 111764986}
+  _redIcon: {fileID: 641920234}
 --- !u!1 &1924442240
 GameObject:
   m_ObjectHideFlags: 0
