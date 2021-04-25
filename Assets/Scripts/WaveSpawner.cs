@@ -178,7 +178,7 @@ public class WaveSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(_delayAfterWaveStarts + Random.Range(4.0f, 5.0f));
 
-        while (GameManager._playerIsAlive)
+        while (GameManager.PlayerIsAlive)
         {
             _waitTimeBetweenPowerUpSpawns = Random.Range(_minPowerUpSpawnStart, _maxPowerUpSpawnStart);
             int _RNDPowerUp = Random.Range(0, _powerUpPrefabs.Length);

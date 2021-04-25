@@ -37,7 +37,7 @@ public class SpawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_delayAfterAsteroidDestroyed);
 
-        while (GameManager._playerIsAlive)
+        while (GameManager.PlayerIsAlive)
         {
             _waitTimeBetweenEnemySpawns = Random.Range(0.5f, 3.0f);
             GameObject newEnemy = Instantiate(_enemyPrefab, new Vector3(0, 10, 0), Quaternion.identity);
@@ -53,7 +53,7 @@ public class SpawnManager : MonoBehaviour
         Debug.Log("Spawning PowerUps: STARTED");
         SpawnCount++;
 
-        while (GameManager._playerIsAlive && _SpawnPowerups)
+        while (GameManager.PlayerIsAlive && _SpawnPowerups)
         {
 
             Debug.Log("Spawning PowerUps: SPAWNING");

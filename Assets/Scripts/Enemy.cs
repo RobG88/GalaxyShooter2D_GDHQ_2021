@@ -52,6 +52,7 @@ public class Enemy : MonoBehaviour
     private void CalculateMovement()
     {
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
+
         if (transform.position.y < _enemyReSpawnThreshold && !_isDestroyed)
         {
             transform.position = SpawnEnmeyAtRandomLocation();
