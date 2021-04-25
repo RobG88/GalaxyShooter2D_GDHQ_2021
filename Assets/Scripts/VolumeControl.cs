@@ -31,7 +31,10 @@ public class VolumeControl : MonoBehaviour
 
     void HandleSliderValueChanged(float value)
     {
-        _mixer.SetFloat(_volumeParameter, Mathf.Log10(value) * _multiplier);
+        ////_mixer.SetFloat("MasterVolume", Mathf.Log10(_sliderMaster.value) * 20);
+        //_mixer.SetFloat(_volumeParameter, Mathf.Log10(value) * _multiplier);
+        _mixer.SetFloat(_volumeParameter, Mathf.Log10(_slider.value) * _multiplier);
+        
         if (_slider.value <= _slider.minValue)
         {
             EnableDisablesIcon(true);
@@ -40,6 +43,7 @@ public class VolumeControl : MonoBehaviour
         {
             EnableDisablesIcon(false);
         }
+        
     }
 
     void EnableDisablesIcon(bool isDisable)
