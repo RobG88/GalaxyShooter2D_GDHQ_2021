@@ -16,8 +16,14 @@ public class PowerUp : MonoBehaviour
 
     public PowerUpType powerUpType;
 
+    AudioSource _audioSource;
+
     [SerializeField] float _speed = 4.0f;
-    [SerializeField] GameObject _sfx;
+    [SerializeField] GameObject _powerUpShieldCollisionFX;
+    [SerializeField] AudioClip _powerUpPickUpSFX;
+
+    SpriteRenderer _spriteRenderer;
+    BoxCollider2D _boxCollider2D;
 
     float _destoryYAxisThreshold = -10.0f;
 
@@ -33,6 +39,12 @@ public class PowerUp : MonoBehaviour
     /// </summary>
     [SerializeField] bool CHEAT_LINE_THEM_UP = false;
 
+    void Awake()
+    {
+        _audioSource = GetComponent<AudioSource>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+    }
     void Start()
     {
         if (!CHEAT_LINE_THEM_UP)
@@ -80,13 +92,16 @@ public class PowerUp : MonoBehaviour
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
-                Destroy(this.gameObject);
+                _spriteRenderer.enabled = false;
+                _boxCollider2D.enabled = false;
+                _audioSource.Play();
+                Destroy(this.gameObject,.5f);
             }
         }
 
         if (other.CompareTag("Shield"))
         {
-            _sfx.SetActive(true);
+            _powerUpShieldCollisionFX.SetActive(true);
             //Instantiate(_sfx, transform.position, Quaternion.identity);
             Destroy(this.gameObject, .15f);
         }

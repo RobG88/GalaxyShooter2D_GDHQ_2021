@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     Vector3 direction;
     float thruster_y; // Variable to amplify the ship's thrusters during forward/up movement
     float _thrustersAnimation; // Variable to amplify the thrusters animation 'flicker'
-    [SerializeField] bool _thrusters_always_on;
+    [SerializeField] bool _thrusters_always_on; //TODO: Screen capturing ONLY --- REMOVE
 
     [SerializeField] GameObject _thruster_left;
     [SerializeField] GameObject _thruster_right;
@@ -61,10 +61,11 @@ public class Player : MonoBehaviour
     ///////////////////////////////
     /// AUDIO VARIABLES
     /// 
-    [SerializeField] AudioClip _laserSFX;
+    //[SerializeField] AudioClip _laserSFX;
     [SerializeField] AudioClip _PowerUpSFX;
-    [SerializeField] AudioClip _explosion;
-    [SerializeField] GameObject PlayerFinalExplosionPE;
+    [SerializeField] AudioClip _explosionSFX;
+    [SerializeField] AudioClip _explosionFinaleSFX;
+    [SerializeField] GameObject _playerFinalExplosionFX;
     AudioSource _audioSource; // Audio source for laser, player damage & powerups
 
     /// 
@@ -202,13 +203,17 @@ public class Player : MonoBehaviour
         // Use the verticalInput 'W' or UpArrow * 1.75 as Thruster localScale multiplier
 
         // TODO: For Scene capturing/recording only delete, along with _thrusters_always_on bool
+        /*
         if (_thrusters_always_on)
             thruster_y = 1 * .6f;
         else
-            thruster_y = verticalInput * .6f;
+            thruster_y = verticalInput * .6f; */
 
-        if (_thrusters_always_on || verticalInput > 0.20f)
-        {
+        thruster_y = verticalInput * .6f;
+
+        //if (_thrusters_always_on || verticalInput > 0.20f)
+        if (verticalInput > 0.20f)
+            {
             // Reset Thrusters/Afterburners to originalLocalScale
             _thruster_left.transform.localScale = _originalThrustersLocalScale;
             _thruster_right.transform.localScale = _originalThrustersLocalScale;
@@ -260,15 +265,15 @@ public class Player : MonoBehaviour
         {
             GameObject laser1 = Instantiate(_laserPrefab, _gunLeft.position, Quaternion.identity);
             GameObject laser2 = Instantiate(_laserPrefab, _gunRight.position, Quaternion.identity);
-            _audioSource.pitch = Random.Range(2.5f, 3.0f);
+            //_audioSource.pitch = Random.Range(2.5f, 3.0f);
         }
         else
         {
             GameObject tripleshot = Instantiate(_tripleshotPrefab, _gunCenter.position, Quaternion.identity);
-            _audioSource.pitch = Random.Range(0.85f, 1.15f);
+            //_audioSource.pitch = Random.Range(0.85f, 1.15f);
         }
 
-        _audioSource.PlayOneShot(_laserSFX, 0.50f);
+        //_audioSource.PlayOneShot(_laserSFX, 0.50f);
     }
 
     public void FireLaserCanon()
@@ -314,7 +319,7 @@ public class Player : MonoBehaviour
                 if (_playerLives == 0)
                 {
                     //isGameOver = true;  Set in PlayerDeath() 
-                    PlayerDeath();
+                    PlayerDeathSequence();
                     ///
                     /// CAMERA SHAKE done via CINEMACHINE
                     /// 
@@ -364,7 +369,7 @@ public class Player : MonoBehaviour
     {
         _damagedLeft = true;
         _shipDamageLeft.SetActive(true);
-        _audioSource.PlayOneShot(_explosion);
+        _audioSource.PlayOneShot(_explosionSFX);
         //_animShipDamageLeft.SetTrigger("PlayerDamageLeft");
     }
 
@@ -372,23 +377,28 @@ public class Player : MonoBehaviour
     {
         _damagedRight = true;
         _shipDamageRight.SetActive(true);
-        _audioSource.PlayOneShot(_explosion);
+        _audioSource.PlayOneShot(_explosionSFX);
         //_animShipDamageRight.SetTrigger("PlayerDamageRight");
     }
 
 
-    void PlayerDeath()
+    void PlayerDeathSequence()
     {
         _spriteRenderer.enabled = false;
         _boxCollider2D.enabled = false;
 
-        _audioSource.PlayOneShot(_explosion);
-
+        //_audioSource.PlayOneShot(_explosionSFX);
+        _playerFinalExplosionFX.SetActive(true);
+        _audioSource.PlayOneShot(_explosionFinaleSFX,4f);
+        _thruster_left.SetActive(false);
+        _thruster_right.SetActive(false);
+        _shipDamageLeft.SetActive(false);
+        _shipDamageRight.SetActive(false);
         GameManager.instance.OnPlayerDeath();
         isGameOver = true;
         UIManager.instance.GameOver(isGameOver);
         WaveSpawner.instance.OnPlayerDeath();
-        Destroy(this.gameObject, 0.25f);
+        Destroy(this.gameObject, 5f);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -538,7 +548,7 @@ public class Player : MonoBehaviour
                   */
         }
         _audioSource.pitch = 1.0f;
-        _audioSource.PlayOneShot(_PowerUpSFX);
+        //_audioSource.PlayOneShot(_PowerUpSFX);
     }
 
     float CalculateShipSpeed() // Ship's speed = _spaceshipSpeed, calc PowerUp, damage 
@@ -587,6 +597,6 @@ public class Player : MonoBehaviour
 
     public void PlayExplosion()
     {
-        _audioSource.PlayOneShot(_explosion);
+        _audioSource.PlayOneShot(_explosionSFX);
     }
 }

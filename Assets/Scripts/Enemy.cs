@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    ////////////////////////////////
+    /// Enemy (Basic)
+    /// 
+    /// Enemy gameObject travels DOWN @ _speed
+    /// 
+    /// Enemy triggers/collides with object &
+    /// is destroyed or is re-deployed when
+    /// position.y > _yThreshold (8)
+    /// 
+    /// Audio: pitch is random & hit for Triple Shot
+    /// 
+
     //[SerializeField] int _scoreValue = 0;
-    [SerializeField] float _enemySpeed = 4.0f;
+    [SerializeField] float _speed = 4.0f;
     //[SerializeField] float _enemyLaser = 6.0f;  // speed of enemy's laser
     //[SerializeField] GameObject _enemyLaserPrefab;
 
     [SerializeField] int _scoreValue = 0;
     //[SerializeField] GameObject _enemyInvaderExplosion;
-    [SerializeField] GameObject _sfx;
+    [SerializeField] GameObject _collisionWithShieldExplosionFX;
     [SerializeField] bool CHEAT_LINE_THEM_UP = false;
 
     Animator _anim;
@@ -51,7 +63,7 @@ public class Enemy : MonoBehaviour
 
     private void CalculateMovement()
     {
-        transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y < _enemyReSpawnThreshold && !_isDestroyed)
         {
@@ -67,12 +79,16 @@ public class Enemy : MonoBehaviour
     void Spawn()
     {
         float respawnX = Random.Range(_respawnXmin, _respawnXmax);
+
         _enemyPos.x = respawnX;
+
         if (CHEAT_LINE_THEM_UP)
         {
             _enemyPos.x = 0;  // testing, line enemy for two lasers intersecting collider}
         }
+
         _enemyPos.y = Random.Range(_respawnYmin, _respawnYmax);
+
         transform.position = _enemyPos;
     }
 
@@ -81,14 +97,14 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Laser") || other.CompareTag("Player") || other.CompareTag("Shield"))
         {
-            _enemySpeed = 0;
+            _speed = 0;
 
             _enemyCollider.enabled = false; // disable collider so two lasers can not collider at the same time
 
             if (other.CompareTag("Shield"))
             {
-
-                _sfx.SetActive(true);
+                Debug.Log("ENERGY EXPLOSION");
+                _collisionWithShieldExplosionFX.SetActive(true);
                 _enemySprite.enabled = false;
                 /// Need to replace with ZAPPER
                 _audioSource.Play();
@@ -96,21 +112,18 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                Debug.Log("Enemy destoryed by: " + other.tag);
+                Debug.Log("Enemy Regular explosion");
+                //Debug.Log("Enemy destoryed by: " + other.tag);
                 //Instantiate(_enemyInvaderExplosion, transform.position, Quaternion.identity);
                 _anim.SetTrigger("OnEnemyDeath");
                 _audioSource.Play();
             }
-
-
         }
     }
 
     void OnDestroy()
     {
         Destroy(this.gameObject);
-        //Player.instance.AddScore(_scoreValue);
-        //WaveSpawner.instance.EnemyDeath();
     }
 
     void UpdateEnemyDeath()

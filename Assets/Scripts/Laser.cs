@@ -13,10 +13,30 @@ public class Laser : MonoBehaviour
     /// is destroyed or self-desrtucts when
     /// position.y > _yThreshold (8)
     /// 
-    ///
+    /// Audio: pitch is random & hit for Triple Shot
 
+    AudioSource _audioSource;
+    [SerializeField] AudioClip _laserSFX;
     [SerializeField] float _speed = 13.0f;
     [SerializeField] float _yThreshold = 12.5f;
+
+    void Awake()
+    {
+        _audioSource = GetComponent<AudioSource>();
+    }
+
+    void Start()
+    {
+        if (transform.parent != null)
+        {
+            _audioSource.pitch = Random.Range(0.85f, 1.15f);
+        }
+        else
+        {
+            _audioSource.pitch = Random.Range(2.0f, 4.0f);
+        }
+        _audioSource.PlayOneShot(_laserSFX);
+    }
 
     void Update()
     {
