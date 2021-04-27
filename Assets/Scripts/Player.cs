@@ -185,7 +185,9 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T)) { _cheat_TRIPLE = !_cheat_TRIPLE; _powerUp_Tripleshot = _cheat_TRIPLE; }
 
         if (Input.GetKeyDown(KeyCode.X) && _shieldActive) { DropShield(); }
-        CalculateMovement();
+
+        if (GameManager.PlayerIsAlive)
+            CalculateMovement();
     }
 
     void CalculateMovement()
@@ -213,7 +215,7 @@ public class Player : MonoBehaviour
 
         //if (_thrusters_always_on || verticalInput > 0.20f)
         if (verticalInput > 0.20f)
-            {
+        {
             // Reset Thrusters/Afterburners to originalLocalScale
             _thruster_left.transform.localScale = _originalThrustersLocalScale;
             _thruster_right.transform.localScale = _originalThrustersLocalScale;
@@ -389,7 +391,7 @@ public class Player : MonoBehaviour
 
         //_audioSource.PlayOneShot(_explosionSFX);
         _playerFinalExplosionFX.SetActive(true);
-        _audioSource.PlayOneShot(_explosionFinaleSFX,4f);
+        _audioSource.PlayOneShot(_explosionFinaleSFX, 4f);
         _thruster_left.SetActive(false);
         _thruster_right.SetActive(false);
         _shipDamageLeft.SetActive(false);

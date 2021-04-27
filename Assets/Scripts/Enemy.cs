@@ -16,10 +16,8 @@ public class Enemy : MonoBehaviour
     /// Audio: pitch is random & hit for Triple Shot
     /// 
 
-    //[SerializeField] int _scoreValue = 0;
     [SerializeField] float _speed = 4.0f;
-    //[SerializeField] float _enemyLaser = 6.0f;  // speed of enemy's laser
-    //[SerializeField] GameObject _enemyLaserPrefab;
+    [SerializeField] GameObject _enemyLaserPrefab;
 
     [SerializeField] int _scoreValue = 0;
     //[SerializeField] GameObject _enemyInvaderExplosion;
@@ -28,11 +26,18 @@ public class Enemy : MonoBehaviour
 
     Animator _anim;
     AudioSource _audioSource;
-    BoxCollider2D _enemyCollider;
-    SpriteRenderer _enemySprite;
+    BoxCollider2D _collider2D;
+    SpriteRenderer _spriteRenderer;
 
-    //float _fireRate = 3.0f;
-    //float _canFire = -1.0f;
+    /// <summary>
+    /// Enemy Laser Attack
+    [SerializeField] float _enemyLaser = 6.0f;  // speed of enemy's laser
+    float _fireRate = 3.0f;
+    [SerializeField] float _canFire = -1.0f;
+    float _upperFireRange = 11.5f;
+    float _lowerFireRange = -4.0f;
+    /// </summary>
+
     bool _isDestroyed = false; // if enemy is hit by player/ship Laser then isDestroyed = true, enemy is put back into pool
 
     float _enemyReSpawnThreshold = -10.0f; // Game Screen threshold, once enemy is beyond this point and has been destroyed it will respawn 
@@ -43,22 +48,48 @@ public class Enemy : MonoBehaviour
     float _respawnYmin = 14.0f;
     float _respawnYmax = 19.0f;
 
+    ///
+    /// FREEZE/EMP TORPEDO Secondary Fire Variable
+    ///
+    bool isFrozen = false;
+    ///
+    /// FREEZE/EMP TORPEDO Secondary Fire Variable - END
+    ///
+
     void Awake()
     {
         _anim = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
-        _enemyCollider = GetComponent<BoxCollider2D>();
-        _enemySprite = GetComponent<SpriteRenderer>();
+        _collider2D = GetComponent<BoxCollider2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
     {
         Spawn();
+        _fireRate = Random.Range(.5f, 2f);
+        _canFire = Time.time + _fireRate;
     }
 
     void Update()
     {
         CalculateMovement();
+
+        if (Time.time > _canFire && WithinFiringRange() && !isFrozen)
+        {
+            _fireRate = Random.Range(2f, 7f);
+
+            _canFire = Time.time + _fireRate;
+
+            GameObject EnemyLaserShot = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
+    bool WithinFiringRange()
+    {
+        if (transform.position.y > _upperFireRange || transform.position.y < _lowerFireRange)
+            return false;
+        return true;
     }
 
     private void CalculateMovement()
@@ -92,6 +123,11 @@ public class Enemy : MonoBehaviour
         transform.position = _enemyPos;
     }
 
+    bool CheckSpawnPosition(Vector3 pos)
+    {
+        return (Physics.CheckSphere(pos, 0.8f));
+    }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -99,13 +135,13 @@ public class Enemy : MonoBehaviour
         {
             _speed = 0;
 
-            _enemyCollider.enabled = false; // disable collider so two lasers can not collider at the same time
+            _collider2D.enabled = false; // disable collider so two lasers can not collider at the same time
 
             if (other.CompareTag("Shield"))
             {
                 Debug.Log("ENERGY EXPLOSION");
                 _collisionWithShieldExplosionFX.SetActive(true);
-                _enemySprite.enabled = false;
+                _spriteRenderer.enabled = false;
                 /// Need to replace with ZAPPER
                 _audioSource.Play();
                 UpdateEnemyDeath();
