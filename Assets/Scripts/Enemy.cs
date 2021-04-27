@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
 
     /// <summary>
     /// Enemy Laser Attack
-    [SerializeField] float _enemyLaser = 6.0f;  // speed of enemy's laser
+    //[SerializeField] float _enemyLaser = 6.0f;  // speed of enemy's laser
     float _fireRate = 3.0f;
     [SerializeField] float _canFire = -1.0f;
     float _upperFireRange = 11.5f;

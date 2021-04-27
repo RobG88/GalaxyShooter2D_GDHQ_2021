@@ -23,7 +23,7 @@ public class PowerUp : MonoBehaviour
     [SerializeField] AudioClip _powerUpPickUpSFX;
 
     SpriteRenderer _spriteRenderer;
-    BoxCollider2D _boxCollider2D;
+    BoxCollider2D _collider2D;
 
     float _destoryYAxisThreshold = -10.0f;
 
@@ -43,7 +43,7 @@ public class PowerUp : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _boxCollider2D = GetComponent<BoxCollider2D>();
+        _collider2D = GetComponent<BoxCollider2D>();
     }
     void Start()
     {
@@ -59,6 +59,7 @@ public class PowerUp : MonoBehaviour
     private void CalculateMovement()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+
         if (transform.position.y < _destoryYAxisThreshold)
         {
             Destroy(this.gameObject);
@@ -87,13 +88,14 @@ public class PowerUp : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(gameObject.name + " just collided with " + other.tag);
         if (other.CompareTag("Player"))
         {
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
                 _spriteRenderer.enabled = false;
-                _boxCollider2D.enabled = false;
+                _collider2D.enabled = false;
                 _audioSource.Play();
                 Destroy(this.gameObject,.5f);
             }
@@ -101,9 +103,12 @@ public class PowerUp : MonoBehaviour
 
         if (other.CompareTag("Shield"))
         {
+            Debug.Log("Collided with: " + other.tag);
+            _spriteRenderer.enabled = false;
+            _collider2D.enabled = false;
+            _audioSource.PlayOneShot(_powerUpPickUpSFX);
             _powerUpShieldCollisionFX.SetActive(true);
-            //Instantiate(_sfx, transform.position, Quaternion.identity);
-            Destroy(this.gameObject, .15f);
+            Destroy(this.gameObject, 0.25f);
         }
     }
 

@@ -147,7 +147,7 @@ MonoBehaviour:
   powerUpType: 0
   _speed: 4
   _powerUpShieldCollisionFX: {fileID: 7916873638650744811, guid: e4a5bc5632efc1d42bd0239a9b9a745d, type: 3}
-  _powerUpPickUpSFX: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+  _powerUpPickUpSFX: {fileID: 8300000, guid: 9f8214028eb445346bc91016740ecd7d, type: 3}
   CHEAT_LINE_THEM_UP: 1
 --- !u!82 &-4686520429813941671
 AudioSource:
