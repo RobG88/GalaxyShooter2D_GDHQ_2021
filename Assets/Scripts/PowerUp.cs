@@ -88,7 +88,7 @@ public class PowerUp : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(gameObject.name + " just collided with " + other.tag);
+        //Debug.Log(gameObject.name + " just collided with " + other.tag);
         if (other.CompareTag("Player"))
         {
             Player player = other.transform.GetComponent<Player>();
@@ -103,7 +103,7 @@ public class PowerUp : MonoBehaviour
 
         if (other.CompareTag("Shield"))
         {
-            Debug.Log("Collided with: " + other.tag);
+            //Debug.Log("Collided with: " + other.tag);
             _spriteRenderer.enabled = false;
             _collider2D.enabled = false;
             _audioSource.PlayOneShot(_powerUpPickUpSFX);

@@ -15,6 +15,22 @@ public class Player : MonoBehaviour
 
     float horizontalInput, verticalInput;
     Vector3 direction;
+
+    ///
+    /// MAIN THRUSTER VARIABLES: Main Thruster, SHIFT enabled speed boost 
+    ///
+    [SerializeField] GameObject _mainThruster;
+    [SerializeField] float _maxThrusters, _currentThruster;
+    private float _thrusterBurnRate = 2.5f;
+    [SerializeField] bool _enableMainThruster;
+    [SerializeField] bool _regeneratingThrusters;
+    private float _thrustersInitialRegenDelay = 2.0f; // wait 2.0f seconds before THRUSTERS begin to regenerate
+    private float _thrustersRegenTick = 0.1f;
+    private WaitForSeconds _thrustersRegenDelay;
+    private WaitForSeconds _thrustersRegenTickDelay;
+    ///
+    /// MAIN THRUSTER VARIABLES - END
+    ///
     float thruster_y; // Variable to amplify the ship's thrusters during forward/up movement
     float _thrustersAnimation; // Variable to amplify the thrusters animation 'flicker'
     [SerializeField] bool _thrusters_always_on; //TODO: Screen capturing ONLY --- REMOVE
@@ -29,6 +45,9 @@ public class Player : MonoBehaviour
     Vector3 ThrusterOffset = new Vector3(0, -0.5f, 0);
     Vector3 _newLeft;
     Vector3 _newRight;
+    ///
+    /// THRUSTERS ALL VARIABLES - END
+    ///
 
     [SerializeField] GameObject _shipDamageLeft;
     [SerializeField] GameObject _shipDamageRight;
@@ -36,8 +55,6 @@ public class Player : MonoBehaviour
     bool _damagedRight = false;
     Animator _animShipDamageLeft;
     Animator _animShipDamageRight;
-
-    bool _enableMainThrusters;
 
     bool isGameOver = false;
 
@@ -149,6 +166,18 @@ public class Player : MonoBehaviour
         _newRight = _rightThrusterOriginalPos + ThrusterOffset;
         _animShipDamageLeft = _shipDamageLeft.GetComponent<Animator>();
         _animShipDamageRight = _shipDamageRight.GetComponent<Animator>();
+        ///
+        /// THRUSTERS VARIABLES INITIALIZE
+        ///
+        _maxThrusters = 10.0f;
+        _currentThruster = 10.0f; // TODO: disable for beginning of game
+        _thrustersRegenDelay = new WaitForSeconds(_thrustersInitialRegenDelay);
+        _thrustersRegenTickDelay = new WaitForSeconds(_thrustersRegenTick);
+        //UIManager.instance.SetMaxThrusters(_maxThrusters);
+        //UIManager.instance.SetThrusters(_currentThrusters);
+        ///
+        /// THRUSTERS VARIABLES INIT - END
+        ///
 
         ///
         /// SHIELDS VARIABLES INITIALIZE
@@ -167,35 +196,61 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
-        {
-            FireLaser();
-        }
-
-        // Cheat Keys:
-        // 
-        // Q = Enable ship wrapping left/right
-        // Below is for testing purposes only
-        //
-        // G = Enable GOD mode
-        //
-        //if (Input.GetKeyDown(KeyCode.Q)) { _wrapShip = !_wrapShip; }
-        if (Input.GetKeyDown(KeyCode.Q)) { _wrapShip = !_wrapShip; UIManager.instance.SetCheatKey(_wrapShip); UIManager.instance.DisplayShipWrapStatus(); }
-        if (Input.GetKeyDown(KeyCode.G)) { _cheat_GODMODE = !_cheat_GODMODE; }
-        if (Input.GetKeyDown(KeyCode.T)) { _cheat_TRIPLE = !_cheat_TRIPLE; _powerUp_Tripleshot = _cheat_TRIPLE; }
-
-        if (Input.GetKeyDown(KeyCode.X) && _shieldActive) { DropShield(); }
-
         if (GameManager.PlayerIsAlive)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
+            {
+                FireLaser();
+            }
+
+            // Cheat Keys:
+            // 
+            // Q = Enable ship wrapping left/right
+            // Below is for testing purposes only
+            //
+            // G = Enable GOD mode
+            //
+            //if (Input.GetKeyDown(KeyCode.Q)) { _wrapShip = !_wrapShip; }
+            if (Input.GetKeyDown(KeyCode.Q)) { _wrapShip = !_wrapShip; UIManager.instance.SetCheatKey(_wrapShip); UIManager.instance.DisplayShipWrapStatus(); }
+            if (Input.GetKeyDown(KeyCode.G)) { _cheat_GODMODE = !_cheat_GODMODE; }
+            if (Input.GetKeyDown(KeyCode.T)) { _cheat_TRIPLE = !_cheat_TRIPLE; _powerUp_Tripleshot = _cheat_TRIPLE; }
+
+            if (Input.GetKeyDown(KeyCode.X) && _shieldActive) { DropShield(); }
+            ///
+            /// MAIN THRUSTER
+            /// Regenerate, Burn & Disable
+            if (RegenThruster() && !_enableMainThruster)
+            {
+                StartCoroutine(RegeneratorThruster());
+            }
+            if (Input.GetKey(KeyCode.LeftShift) && Thruster())
+            {
+                EnableMainThruster();
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                DisableMainThruster();
+            }
+            ///
+            ///  MAIN THRUSTER - END
+            ///
+
             CalculateMovement();
+        }
     }
 
     void CalculateMovement()
     {
         _speed = CalculateShipSpeed();
 
+        //UIManager.instance.CurrentSpeed(_speed); // TODO: Remove for Medium article on Speed/Thrusters
+
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
+
+        // Animate Ship Tilting/Banking
+        _anim.SetFloat("Tilt", horizontalInput); // * 2.0f);
+
         direction = new Vector3(horizontalInput, verticalInput, 0);
         transform.Translate(direction * _speed * Time.deltaTime);
 
@@ -392,6 +447,13 @@ public class Player : MonoBehaviour
         //_audioSource.PlayOneShot(_explosionSFX);
         _playerFinalExplosionFX.SetActive(true);
         _audioSource.PlayOneShot(_explosionFinaleSFX, 4f);
+        ///
+        /// THRUSTER - DISABLE PLAYER DEATH
+        /// 
+        _mainThruster.SetActive(false);
+        ///
+        /// THRUSTER - DISABLE PLAYER DEATH - END
+        ///
         _thruster_left.SetActive(false);
         _thruster_right.SetActive(false);
         _shipDamageLeft.SetActive(false);
@@ -553,18 +615,26 @@ public class Player : MonoBehaviour
         //_audioSource.PlayOneShot(_PowerUpSFX);
     }
 
-    float CalculateShipSpeed() // Ship's speed = _spaceshipSpeed, calc PowerUp, damage 
+    /// 
+    /// CalculateShipSpeed
+    /// 
+    /// Speed will be reduced on damage
+    /// This calculated base can also be
+    /// modified by Speed Boost power-up
+    /// and Afterburner thruster
+    /// 
+    float CalculateShipSpeed()
     {
         var _newSpeed = _spaceshipSpeed;
 
         if (_playerLives == 2)
         {
-            _newSpeed = _spaceshipSpeed - 1;
+            _newSpeed = _spaceshipSpeed - 2;
         }
 
         if (_playerLives == 1)
         {
-            _newSpeed = _spaceshipSpeed - 2;
+            _newSpeed = _spaceshipSpeed - 4;
         }
 
         if (_speedActive) // PowerUp = speed * 175%
@@ -574,7 +644,7 @@ public class Player : MonoBehaviour
         ///
         /// THRUSTERS - SPEED CALC
         /// 
-        if (_enableMainThrusters) // Thrusters = speed * 250%
+        if (_enableMainThruster) // Thrusters = speed * 250%
         {
             _newSpeed = _spaceshipSpeed * 2.50f;
         }
@@ -583,6 +653,72 @@ public class Player : MonoBehaviour
         /// 
         return _newSpeed;
     }
+
+    ///
+    /// MAIN THRUSTER ROUTINES
+    ///
+    private bool Thruster() // True, if ship has Main Thruster power
+    {
+        return (_currentThruster > 0);
+    }
+    private bool RegenThruster() // True, if ship's Main Thurster power < Max Thrusters
+    {
+        return (_currentThruster < _maxThrusters);
+    }
+    private void EnableMainThruster()
+    {
+        _regeneratingThrusters = false;
+        _enableMainThruster = true;
+        _mainThruster.SetActive(_enableMainThruster);
+
+        Vector3 _mainThrusterDelta = new Vector3(_thruster_left.transform.localScale.x,
+                        -0.55f,
+                        _thruster_left.transform.localScale.z);
+
+        float _afterburnerAnimation = Random.Range(1.25f, 1.50f);
+        _mainThruster.transform.localScale = _mainThrusterDelta * _afterburnerAnimation;
+
+        if (_currentThruster > 0)
+        {
+            _currentThruster -= _thrusterBurnRate * Time.deltaTime;
+
+            if (_currentThruster <= 0)
+            {
+                _currentThruster = 0;
+                _enableMainThruster = false;
+                _mainThruster.SetActive(_enableMainThruster);
+                _speed = CalculateShipSpeed();
+            }
+
+            UIManager.instance.SetThrusters(_currentThruster);
+        }
+    }
+
+    private void DisableMainThruster()
+    {
+        _enableMainThruster = false;
+        _mainThruster.SetActive(_enableMainThruster);
+    }
+
+    private IEnumerator RegeneratorThruster()
+    {
+        _regeneratingThrusters = true;
+
+        yield return _thrustersRegenDelay; // cahced WaitForSeconds(_thrustersInitialRegenDelay)
+
+        while (_currentThruster < _maxThrusters && _regeneratingThrusters)
+        {
+            //_currentThruster += _maxThrusters / 100000;
+            _currentThruster += _maxThrusters / 10000;
+            UIManager.instance.SetThrusters(_currentThruster);
+            yield return _thrustersRegenTickDelay;
+        }
+
+        _regeneratingThrusters = false;
+    }
+    ///
+    /// MAIN THRUSTER ROUTINES - END
+    ///
 
 
     public void AddScore(int scoreAmount) // Update score, send to UI

@@ -1,14 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio;
+using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoSingleton<UIManager>
 {
-    public static UIManager instance;
-
     [SerializeField] Text _scoreText;
     [SerializeField] Image _livesRemainingImage;
     [SerializeField] Sprite[] _livesSprites;
@@ -34,13 +30,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject _optionsMenu;
     [SerializeField] GameObject _pausePanel;
 
+    ///
+    /// MAIN THRUSTERS Variable
+    ///
+    [SerializeField] Slider _thrustersSlider;
+    ///
+    /// MAIN THRUSTERS Variable - END
+    ///
+
     string textToBlink;
 
     bool CheatKeyEnabled;
 
-    void Awake()
+    public override void Init()
     {
-        instance = this;
+        base.Init();
     }
 
     void Start()
@@ -50,13 +54,14 @@ public class UIManager : MonoBehaviour
         _restartGameText.gameObject.SetActive(false);
     }
 
+    /*
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
             ActiveTripleShotUI();
         }
-    }
+    }*/
 
     public void UpdateScore(int playerScore)
     {
@@ -181,6 +186,24 @@ public class UIManager : MonoBehaviour
         /// Similar to Player PowerUp Case & PowerUp String
         /// Activating the PowerUp Counter should work the same
     }
+
+
+
+    ///
+    /// MAIN THRUSTERS UI Functions
+    ///
+    public void SetMaxThrusters(float thrusters)
+    {
+        _thrustersSlider.maxValue = thrusters;
+        _thrustersSlider.value = thrusters;
+    }
+    public void SetThrusters(float thrusters)
+    {
+        _thrustersSlider.value = thrusters;
+    }
+    ///
+    /// MAIN THRUSTERS UI Functions - END
+    ///
 
     public void GameOver(bool isGameOVer)
     {

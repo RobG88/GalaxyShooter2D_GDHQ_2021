@@ -30,12 +30,12 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] GameObject[] _powerUpPrefabs;
     [SerializeField] GameObject _powerUpContainer;
     float _waitTimeBetweenPowerUpSpawns;
-    [SerializeField] float _spawnNextPowerup = -1.0f;  // game time value, tracking when a powerup can be spawned
+    //[SerializeField] float _spawnNextPowerup = -1.0f;  // game time value, tracking when a powerup can be spawned
     [SerializeField] float _minPowerUpSpawnStart = 5f;
     [SerializeField] float _maxPowerUpSpawnStart = 8f;
 
 
-    float _spawnPowerRate; // random time between min & max;
+    //float _spawnPowerRate; // random time between min & max;
 
 
     float _delayAfterWaveStarts = 3f; // delay SPAWNING of Power-Ups at the beginning of each wave
@@ -132,7 +132,7 @@ public class WaveSpawner : MonoBehaviour
         // Give Name of next wave
         // Start a wave countdown
         // Depending on performance a bonus
-        Debug.Log("All Enemies Destroyed --- Wave Completed!");
+        //Debug.Log("All Enemies Destroyed --- Wave Completed!");
 
         StopCoroutine("SpawnPowerUpRoutine");
 
@@ -149,7 +149,7 @@ public class WaveSpawner : MonoBehaviour
             // Game difficulty could be increased by an enemy stat multiplier
             // Earn perks, bonus, shields, weapons, defense, bombs, nukes, specials
 
-            Debug.Log("All WAVES Complete! ... Loopinng");
+            //Debug.Log("All WAVES Complete! ... Loopinng");
 
             // Game Completed rather then looping
             // Begin a new scene ... new level of the game

@@ -74,14 +74,14 @@ public class AudioManagerFourth : MonoBehaviour
 
     void HandleMasterToggleValueChange(bool enableSound)
     {
-        Debug.Log("EnableSound = " + enableSound);
+        //Debug.Log("EnableSound = " + enableSound);
         if (_disableMasterToggleEvent) return;
 
         if (enableSound)
         {
             //slider.value = slider.maxValue;
             sliderMaster.value = _preMutedMasterSliderValue;
-            Debug.Log("Setting Value after RE-enabling toggle");
+            //Debug.Log("Setting Value after RE-enabling toggle");
         }
         else
         {
@@ -103,14 +103,14 @@ public class AudioManagerFourth : MonoBehaviour
 
     void HandleMusicToggleValueChange(bool enableSound)
     {
-        Debug.Log("EnableSound = " + enableSound);
+        //Debug.Log("EnableSound = " + enableSound);
         if (_disableMusicToggleEvent) return;
 
         if (enableSound)
         {
             //slider.value = slider.maxValue;
             sliderMusic.value = _preMutedMusicSliderValue;
-            Debug.Log("Setting Value after RE-enabling toggle");
+            //Debug.Log("Setting Value after RE-enabling toggle");
         }
         else
         {
@@ -123,7 +123,7 @@ public class AudioManagerFourth : MonoBehaviour
     {
         mixer.SetFloat("MusicVolume", Mathf.Log10(sliderMusic.value) * _multiplier);
         sliderMusicValue = sliderMusic.value;
-        Debug.Log("New Music Volume = " + sliderMusicValue);
+        //Debug.Log("New Music Volume = " + sliderMusicValue);
         //if (value == slider.minValue) AudioListener.pause = true;
         _disableMusicToggleEvent = true;
         toggleMusic.isOn = sliderMusic.value > sliderMusic.minValue;
@@ -152,7 +152,7 @@ public class AudioManagerFourth : MonoBehaviour
     {
         mixer.SetFloat("SFXVolume", Mathf.Log10(sliderSFX.value) * _multiplier);
         sliderSFXValue = sliderSFX.value;
-        Debug.Log("New SFX Volume = " + sliderSFXValue);
+        //Debug.Log("New SFX Volume = " + sliderSFXValue);
         //if (value == slider.minValue) AudioListener.pause = true;
         _disableSFXToggleEvent = true;
         toggleSFX.isOn = sliderSFX.value > sliderSFX.minValue;

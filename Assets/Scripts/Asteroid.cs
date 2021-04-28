@@ -26,7 +26,7 @@ public class Asteroid : MonoBehaviour
     CircleCollider2D _asteroidCollider2D;
     SpriteRenderer _asteroidSprite;
 
-    [SerializeField] bool _initialAsteroid = false;
+    //[SerializeField] bool _initialAsteroid = false;
 
     void Start()
     {

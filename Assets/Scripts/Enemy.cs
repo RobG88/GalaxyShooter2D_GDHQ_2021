@@ -66,7 +66,9 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        Spawn();
+        if (!CHEAT_LINE_THEM_UP)
+            Spawn();
+
         _fireRate = Random.Range(.5f, 2f);
         _canFire = Time.time + _fireRate;
     }
@@ -139,7 +141,7 @@ public class Enemy : MonoBehaviour
 
             if (other.CompareTag("Shield"))
             {
-                Debug.Log("ENERGY EXPLOSION");
+                //Debug.Log("ENERGY EXPLOSION");
                 _collisionWithShieldExplosionFX.SetActive(true);
                 _spriteRenderer.enabled = false;
                 /// Need to replace with ZAPPER
@@ -148,7 +150,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                Debug.Log("Enemy Regular explosion");
+                //Debug.Log("Enemy Regular explosion");
                 //Debug.Log("Enemy destoryed by: " + other.tag);
                 //Instantiate(_enemyInvaderExplosion, transform.position, Quaternion.identity);
                 _anim.SetTrigger("OnEnemyDeath");
