@@ -9,8 +9,8 @@ public class PlayerShields : MonoBehaviour
     /// Inner Hex Color = 6200FF
     /// Outer Glow Color = 3B00FF
     /// 
-    [SerializeField] bool _shieldActive = false;
-    [SerializeField] GameObject _shield;
+    //[SerializeField] bool _shieldActive = false;
+    //[SerializeField] GameObject _shield;
     [SerializeField] int _shieldPower;
     [SerializeField] int _shieldBonus;
     /// 
@@ -19,29 +19,26 @@ public class PlayerShields : MonoBehaviour
 
     private void OnEnable()
     {
-        _shield.transform.localScale = new Vector3(1, 1, 1);
+        //_shield.transform.localScale = new Vector3(1, 1, 1);
+        transform.localScale = new Vector3(1, 1, 1);
         _shieldPower = 3;
-        _shieldActive = true;
+        //_shieldActive = true;
     }
 
     public void Damage()
     {
-        //Player.instance.PlayExplosion();
-        if (_shieldActive)
+        if (_shieldPower > 0)
         {
-            //_sound.clip = _explosionSFX;
-            //_sound.PlayOneShot(_sound.clip);
-            if (_shieldPower > 0)
-            {
-                _shieldPower--;
-                _shield.transform.localScale -= new Vector3(0.20f, 0.20f, 0.20f);
-            }
-            if (_shieldPower == 0)
-            {
-                _shieldActive = false;
-                Player.instance.ShieldsDestroyed();
-                _shield.SetActive(false);
-            }
+            _shieldPower--;
+            //_shield.transform.localScale -= new Vector3(0.20f, 0.20f, 0.20f);
+            transform.localScale -= new Vector3(0.20f, 0.20f, 0.20f);
+        }
+        if (_shieldPower == 0)
+        {
+            //_shieldActive = false;
+            Player.instance.ShieldsDestroyed();
+            //_shield.SetActive(false);
+            //this.gameObject.SetActive(false);
         }
     }
 

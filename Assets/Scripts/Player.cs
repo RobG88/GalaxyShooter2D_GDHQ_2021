@@ -516,15 +516,14 @@ public class Player : MonoBehaviour
     public void Activate_PowerUp_Shields()
     {
         _shieldActive = true;
-        //_shieldPower = 3;                                   // # of hits before shield is destroyed
-        //_shield.transform.localScale = _shieldOriginalSize; // reset shield graphic to initial size
-        _shield.SetActive(_shieldActive);                            // enable the Shield gameObject
+        _shield.SetActive(_shieldActive);
         _playerShield = gameObject.GetComponentInChildren<PlayerShields>();
     }
 
     public void ShieldsDestroyed()
     {
         _shieldActive = false;
+        _shield.SetActive(_shieldActive);
     }
 
     IEnumerator ActivatePowerupShields()
