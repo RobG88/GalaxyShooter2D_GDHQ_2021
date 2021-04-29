@@ -200,6 +200,7 @@ public class UIManager : MonoSingleton<UIManager>
     public void SetThrusters(float thrusters)
     {
         _thrustersSlider.value = thrusters;
+        //Debug.Log("Thrusters Level = " + thrusters);
     }
     ///
     /// MAIN THRUSTERS UI Functions - END

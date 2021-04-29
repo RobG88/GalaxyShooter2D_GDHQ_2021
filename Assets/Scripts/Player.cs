@@ -21,13 +21,14 @@ public class Player : MonoBehaviour
     ///
     [SerializeField] GameObject _mainThruster;
     [SerializeField] float _maxThrusters, _currentThruster;
-    private float _thrusterBurnRate = 2.5f;
+    float _thrusterBurnRate = 1.5f;
     [SerializeField] bool _enableMainThruster;
     [SerializeField] bool _regeneratingThrusters;
-    private float _thrustersInitialRegenDelay = 2.0f; // wait 2.0f seconds before THRUSTERS begin to regenerate
-    private float _thrustersRegenTick = 0.1f;
-    private WaitForSeconds _thrustersRegenDelay;
-    private WaitForSeconds _thrustersRegenTickDelay;
+    float _thrustersInitialRegenDelay = 2.0f; // wait 2.0f seconds before THRUSTERS begin to regenerate
+    float _thrustersRegenTick = 0.1f;
+    WaitForSeconds _thrustersRegenDelay;
+    WaitForSeconds _thrustersRegenTickDelay;
+    [SerializeField] float _regeneratingThrusterRate;
     ///
     /// MAIN THRUSTER VARIABLES - END
     ///
@@ -135,7 +136,7 @@ public class Player : MonoBehaviour
     // T = TRIPLESHOT
     bool _cheat_TRIPLE = false;
 
-    private void Awake()
+    void Awake()
     {
         instance = this;
         _anim = GetComponent<Animator>();
@@ -422,7 +423,7 @@ public class Player : MonoBehaviour
         //_sound.PlayOneShot(_sound.clip);
     }
 
-    private void SpaceshipDamagedLeft() // ship port side damage
+    void SpaceshipDamagedLeft() // ship port side damage
     {
         _damagedLeft = true;
         _shipDamageLeft.SetActive(true);
@@ -430,7 +431,7 @@ public class Player : MonoBehaviour
         //_animShipDamageLeft.SetTrigger("PlayerDamageLeft");
     }
 
-    private void SpaceshipDamagedRight() // ship starboard side damage
+    void SpaceshipDamagedRight() // ship starboard side damage
     {
         _damagedRight = true;
         _shipDamageRight.SetActive(true);
@@ -657,15 +658,15 @@ public class Player : MonoBehaviour
     ///
     /// MAIN THRUSTER ROUTINES
     ///
-    private bool Thruster() // True, if ship has Main Thruster power
+    bool Thruster() // True, if ship has Main Thruster power
     {
         return (_currentThruster > 0);
     }
-    private bool RegenThruster() // True, if ship's Main Thurster power < Max Thrusters
+    bool RegenThruster() // True, if ship's Main Thurster power < Max Thrusters
     {
         return (_currentThruster < _maxThrusters);
     }
-    private void EnableMainThruster()
+    void EnableMainThruster()
     {
         _regeneratingThrusters = false;
         _enableMainThruster = true;
@@ -676,7 +677,13 @@ public class Player : MonoBehaviour
                         _thruster_left.transform.localScale.z);
 
         float _afterburnerAnimation = Random.Range(1.25f, 1.50f);
+
         _mainThruster.transform.localScale = _mainThrusterDelta * _afterburnerAnimation;
+
+        if (_currentThruster >= 10)
+        {
+            _regeneratingThrusterRate = 10000f;
+        }
 
         if (_currentThruster > 0)
         {
@@ -686,6 +693,7 @@ public class Player : MonoBehaviour
             {
                 _currentThruster = 0;
                 _enableMainThruster = false;
+                _regeneratingThrusterRate = 100000f;
                 _mainThruster.SetActive(_enableMainThruster);
                 _speed = CalculateShipSpeed();
             }
@@ -694,13 +702,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void DisableMainThruster()
+    void DisableMainThruster()
     {
         _enableMainThruster = false;
         _mainThruster.SetActive(_enableMainThruster);
     }
 
-    private IEnumerator RegeneratorThruster()
+    IEnumerator RegeneratorThruster()
     {
         _regeneratingThrusters = true;
 
@@ -709,7 +717,7 @@ public class Player : MonoBehaviour
         while (_currentThruster < _maxThrusters && _regeneratingThrusters)
         {
             //_currentThruster += _maxThrusters / 100000;
-            _currentThruster += _maxThrusters / 10000;
+            _currentThruster += _maxThrusters / _regeneratingThrusterRate;
             UIManager.instance.SetThrusters(_currentThruster);
             yield return _thrustersRegenTickDelay;
         }

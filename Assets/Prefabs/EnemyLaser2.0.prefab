@@ -19650,3 +19650,4 @@ MonoBehaviour:
   _yThreshold: -10
   _playerShieldCollisionFX: {fileID: 1595990340928667373}
   _playerShieldCollisionSFX: {fileID: 8300000, guid: 2e3914bc66647934b81f49d85166ed80, type: 3}
+  _collidingWithPlayerLaserSFX: {fileID: 8300000, guid: 7b412497c0db4b64a907f098f912f674, type: 3}
