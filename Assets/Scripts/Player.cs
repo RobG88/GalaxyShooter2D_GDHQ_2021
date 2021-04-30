@@ -86,6 +86,15 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject _playerFinalExplosionFX;
     AudioSource _audioSource; // Audio source for laser, player damage & powerups
 
+    ///
+    /// AMMO VARIABLES
+    ///
+    [SerializeField] int _maxAmmo, _currentAmmo;
+    [SerializeField] AudioClip _out_of_ammo_sfx;
+    ///
+    /// AMMO VARIABLES - END
+    ///
+
     /// 
     /// POWERUP VARIABLES
     /// 
@@ -129,6 +138,16 @@ public class Player : MonoBehaviour
     /// </summary>
 
 
+    ///
+    /// FREEZE/EMP TORPEDO second fire VARIABLES
+    ///
+    [SerializeField] GameObject _freezeTorpedo;
+    private bool _freezeTorpedoLoaded;
+    [SerializeField] GameObject _freezeTorpedoSprite;
+    ///
+    /// FREEZE/EMP TORPEDO second fire VARIABLES - END
+    ///
+
     // CHEAT KEYS
     //
     // G = GOD mode
@@ -158,6 +177,18 @@ public class Player : MonoBehaviour
 
         UIManager.instance.DisplayLives(_playerLives);
         UIManager.instance.DisplayShipWrapStatus();
+
+        ///
+        /// AMMO VARIABLES INITIALIZE
+        ///
+        // Laser Cannon Ammo
+        _currentAmmo = 15;
+        _maxAmmo = 15;
+        UIManager.instance.SetMaxAmmo(_maxAmmo);
+        UIManager.instance.SetAmmo(_currentAmmo);
+        ///
+        /// AMMO VARIABLES INITIALIZE - END
+        ///
 
         /// Thrusters Left & Right
         /// Thrusters Damage
@@ -199,10 +230,34 @@ public class Player : MonoBehaviour
     {
         if (GameManager.PlayerIsAlive)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && Ammo() && !_freezeTorpedoLoaded)
+            //if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
             {
                 FireLaser();
             }
+            ///
+            /// FREEZE/EMP TORPEDO second fire User Input
+            ///
+            /// TORPEDO
+            else if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && _freezeTorpedoLoaded)
+            {
+                FireFreezeTorpedo();
+            }
+            ///
+            /// FREEZE/EMP TORPEDO second fire User Input
+            ///
+
+            ///
+            /// AMMO - Out of Ammo SFX
+            /// 
+            else if (Input.GetKeyDown(KeyCode.Space) && !Ammo() && !_freezeTorpedoLoaded)
+            {
+                _audioSource.clip = _out_of_ammo_sfx;
+                _audioSource.PlayOneShot(_audioSource.clip);
+            }
+            ///
+            /// AMMO - Out of Ammo SFX - END
+            /// 
 
             // Cheat Keys:
             // 
@@ -319,6 +374,16 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _nextFire = Time.time + _fireRate; // delay (in Seconds) how quickly the laser will fire
+
+        ///
+        /// AMMO TRACKING & UI UPDATE
+        ///
+        _currentAmmo--;
+        UIManager.instance.SetAmmo(_currentAmmo);
+        ///
+        /// AMMO TRACKING & UI UPDATE - END
+        ///
+
         if (!_powerUp_Tripleshot)
         {
             GameObject laser1 = Instantiate(_laserPrefab, _gunLeft.position, Quaternion.identity);
@@ -339,6 +404,19 @@ public class Player : MonoBehaviour
         _anim.SetBool("fire", false);
         FireLaser();
     }
+
+    ///
+    /// AMMO BOOL FUNCTION
+    ///
+    private bool Ammo() // True, if ship has Laser Cannon Energy
+    {
+        return (_currentAmmo > 0);
+    }
+    ///
+    /// AMMO BOOL FUNCTION
+    ///
+
+    private void FireFreezeTorpedo() { }
 
     ///
     /// SHIELDS - SHIP DAMAGE ROUTINE
@@ -479,6 +557,7 @@ public class Player : MonoBehaviour
 
             string PowerUpToActivate;
             PowerUpToActivate = other.transform.GetComponent<PowerUp>().PowerType().ToString();
+            Debug.Log("Power Up activated: " + PowerUpToActivate);
 
             // TODO: Need to Handle Multiple PowerUps?
             // TODO: Do not allow collecting Power-Ups when shield is enabled
@@ -582,38 +661,59 @@ public class Player : MonoBehaviour
                    Activate_PowerUp_Shields();
                 */
                 break;
-                /// 
-                /// SHIELD POWERUP - END
-                /// 
-                /*
-                      case "EnergyCell":
-                          LaserCannonsRefill(5);
-                          break;
-                      ///
-                      /// REPAIR 'Health' POWERUP
-                      /// 
-                      case "Repair":
-                          RepairShip();
-                          break;
-                      ///
-                      /// REPAIR 'Health' POWERUP - END
-                      /// 
+            /// 
+            /// SHIELD POWERUP - END
+            /// 
+            /*
+                  case "EnergyCell":
+                      LaserCannonsRefill(5);
+                      break;
+                  ///
+                  /// REPAIR 'Health' POWERUP
+                  /// 
+                  case "Repair":
+                      RepairShip();
+                      break;
+                  ///
+                  /// REPAIR 'Health' POWERUP - END
+                  /// 
 
+                  ///
+                  /// FREEZE/EMP TORPEDO POWERUP
+                  /// 
+                  case "FreezeTorpedo":
+                      _freezeTorpedoLoaded = true;
+                      _freezeTorpedoSprite.SetActive(true);
+                      break;
                       ///
-                      /// FREEZE/EMP TORPEDO POWERUP
-                      /// 
-                      case "FreezeTorpedo":
-                          _freezeTorpedoLoaded = true;
-                          _freezeTorpedoSprite.SetActive(true);
-                          break;
-                          ///
-                          /// FREEZE/EMP TORPEDO POWERUP - END
-                          ///
-                  */
+                      /// FREEZE/EMP TORPEDO POWERUP - END
+                      ///
+              */
+            case "EnergyCell":
+                LaserCannonsRefill(5);
+                break;
         }
         _audioSource.pitch = 1.0f;
         //_audioSource.PlayOneShot(_PowerUpSFX);
     }
+
+
+    ///
+    /// AMMO FILL FUNCTION
+    ///
+    private void LaserCannonsRefill(int ammo)
+    {
+        Debug.Log("Current Ammo = " + _currentAmmo);
+        _currentAmmo = _currentAmmo + ammo;
+        if (_currentAmmo > 15)
+            _currentAmmo = 15;
+        UIManager.instance.SetAmmo(_currentAmmo);
+        Debug.Log("Current Ammo = " + _currentAmmo);
+    }
+    ///
+    /// AMMO FILL FUNCTION - END
+    ///
+
 
     /// 
     /// CalculateShipSpeed

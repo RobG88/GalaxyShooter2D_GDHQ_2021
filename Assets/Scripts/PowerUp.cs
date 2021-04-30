@@ -9,7 +9,7 @@ public class PowerUp : MonoBehaviour
         TripleShot,
         Shield,
         Speed,
-        LaserEnergy,
+        EnergyCell,
         Repair,
         Ultimate
     }

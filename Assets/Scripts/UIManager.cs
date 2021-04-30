@@ -31,6 +31,16 @@ public class UIManager : MonoSingleton<UIManager>
     [SerializeField] GameObject _pausePanel;
 
     ///
+    /// AMMO Variables
+    ///
+    [SerializeField] Slider _ammoSlider;
+    //[SerializeField] Gradient _ammoBarGradient;
+    //[SerializeField] Image _ammoBarFill;
+    ///
+    /// AMMO Variables - END
+    ///
+
+    ///
     /// MAIN THRUSTERS Variable
     ///
     [SerializeField] Slider _thrustersSlider;
@@ -187,7 +197,32 @@ public class UIManager : MonoSingleton<UIManager>
         /// Activating the PowerUp Counter should work the same
     }
 
+    ///
+    /// AMMO UI Functions
+    ///
+    /*
+    public void SetMaxAmmo(int ammo)
+    {
+        _ammoSlider.maxValue = ammo;
+        _ammoSlider.value = ammo;
 
+        _ammoBarFill.color = _ammoBarGradient.Evaluate(1f);
+    }
+    public void SetAmmo(int ammo)
+    {
+        _ammoSlider.value = ammo;
+        _ammoBarFill.color = _ammoBarGradient.Evaluate(_ammoSlider.normalizedValue);
+    }*/
+    public void SetMaxAmmo(int ammo) {
+        _ammoSlider.maxValue = ammo;
+    }
+    public void SetAmmo(int ammo)
+    {
+        _ammoSlider.value = ammo;
+    }
+    ///
+    /// AMMO UI Functions - END
+    ///
 
     ///
     /// MAIN THRUSTERS UI Functions
