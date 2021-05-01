@@ -557,10 +557,8 @@ public class Player : MonoBehaviour
 
             string PowerUpToActivate;
             PowerUpToActivate = other.transform.GetComponent<PowerUp>().PowerType().ToString();
-            Debug.Log("Power Up activated: " + PowerUpToActivate);
 
             // TODO: Need to Handle Multiple PowerUps?
-            // TODO: Do not allow collecting Power-Ups when shield is enabled
 
             ActivatePowerUp(PowerUpToActivate);
         }
@@ -626,11 +624,11 @@ public class Player : MonoBehaviour
         switch (_powerUpType)
         {
             case "TripleShot":
-
+                LaserCannonsRefill(15);
                 Activate_PowerUp_Tripleshot();
                 /*
                 _tripleShotActive = true;
-                LaserCannonsRefill(15);
+
                 //_timesUpText.text = _powerUpType;
                 // Enable PowerUpCountDownBar
                 _powerUpCountDownBar.SetActive(true);
@@ -638,59 +636,42 @@ public class Player : MonoBehaviour
                 */
                 break;
             case "Speed":
-
                 Activate_PowerUp_SpeedBoost();
-                /*
-                // Enable PowerUpCountDownBar
-                _powerUpCountDownBar.SetActive(true);
-                StartCoroutine(PowerUpCoolDownRoutine(_speedCoolDown));
-                */
                 break;
             /// 
             /// SHIELD POWERUP
             /// 
             case "Shield":
                 Activate_PowerUp_Shields();
-                /*
-                _shieldActive = true;
-                _shieldPower = 3; // # of hits before shield is destroyed
-                _shield.transform.localScale = _shieldOriginalSize; // reset shield graphic to initial size
-
-                _shield.SetActive(true); // enable the Shield gameObject
-                /*
-                   Activate_PowerUp_Shields();
-                */
                 break;
             /// 
             /// SHIELD POWERUP - END
             /// 
-            /*
-                  case "EnergyCell":
-                      LaserCannonsRefill(5);
-                      break;
-                  ///
-                  /// REPAIR 'Health' POWERUP
-                  /// 
-                  case "Repair":
-                      RepairShip();
-                      break;
-                  ///
-                  /// REPAIR 'Health' POWERUP - END
-                  /// 
 
-                  ///
-                  /// FREEZE/EMP TORPEDO POWERUP
-                  /// 
-                  case "FreezeTorpedo":
-                      _freezeTorpedoLoaded = true;
-                      _freezeTorpedoSprite.SetActive(true);
-                      break;
-                      ///
-                      /// FREEZE/EMP TORPEDO POWERUP - END
-                      ///
-              */
+
+            ///
+            /// REPAIR 'Health' POWERUP
+            /// 
+            case "Repair":
+                RepairShip();
+                break;
+            ///
+            /// REPAIR 'Health' POWERUP - END
+            /// 
+
+            ///
+            /// FREEZE/EMP TORPEDO POWERUP
+            /// 
+            case "FreezeTorpedo":
+                _freezeTorpedoLoaded = true;
+                _freezeTorpedoSprite.SetActive(true);
+                break;
+            ///
+            /// FREEZE/EMP TORPEDO POWERUP - END
+            ///
+
             case "EnergyCell":
-                LaserCannonsRefill(5);
+                LaserCannonsRefill(10);
                 break;
         }
         _audioSource.pitch = 1.0f;
@@ -703,17 +684,16 @@ public class Player : MonoBehaviour
     ///
     private void LaserCannonsRefill(int ammo)
     {
-        Debug.Log("Current Ammo = " + _currentAmmo);
         _currentAmmo = _currentAmmo + ammo;
         if (_currentAmmo > 15)
             _currentAmmo = 15;
         UIManager.instance.SetAmmo(_currentAmmo);
-        Debug.Log("Current Ammo = " + _currentAmmo);
     }
     ///
     /// AMMO FILL FUNCTION - END
     ///
 
+    void RepairShip() { }
 
     /// 
     /// CalculateShipSpeed
