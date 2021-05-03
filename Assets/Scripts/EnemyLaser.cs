@@ -46,25 +46,23 @@ public class EnemyLaser : MonoBehaviour
     {
         if (other.CompareTag("Laser") || other.CompareTag("Player") || other.CompareTag("Shield"))
         {
+            _spriteRenderer.enabled = false;
+            _collider2D.enabled = false;
+
             if (other.CompareTag("Shield"))
             {
-                _spriteRenderer.enabled = false;
-                _collider2D.enabled = false;
                 _audioSource.PlayOneShot(_playerShieldCollisionSFX);
                 _playerShieldCollisionFX.SetActive(true);
             }
 
             if (other.CompareTag("Laser"))
             {
-                Debug.Log("Boom Laser E Laser");
-                _spriteRenderer.enabled = false;
-                _collider2D.enabled = false;
                 _audioSource.PlayOneShot(_collidingWithPlayerLaserSFX);
                 _playerShieldCollisionFX.transform.localScale = new Vector3(.25f, .25f, .25f);
                 _playerShieldCollisionFX.SetActive(true);
             }
 
-            Destroy(gameObject, .5f);
+            Destroy(gameObject, .3f);
         }
     }
 }

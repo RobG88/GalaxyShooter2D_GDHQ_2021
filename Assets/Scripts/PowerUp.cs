@@ -21,6 +21,8 @@ public class PowerUp : MonoBehaviour
     [SerializeField] float _speed = 4.0f;
     [SerializeField] GameObject _powerUpShieldCollisionFX;
     [SerializeField] AudioClip _powerUpPickUpSFX;
+    [SerializeField] bool _rotateOnYAxis;
+    float _rotationSpeed = 250f;
 
     SpriteRenderer _spriteRenderer;
     BoxCollider2D _collider2D;
@@ -59,6 +61,10 @@ public class PowerUp : MonoBehaviour
     private void CalculateMovement()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+
+        if (_rotateOnYAxis) {
+            transform.Rotate(0f, _rotationSpeed * Time.deltaTime, 0f);
+        }
 
         if (transform.position.y < _destoryYAxisThreshold)
         {

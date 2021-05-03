@@ -87,12 +87,12 @@ public class Player : MonoBehaviour
     AudioSource _audioSource; // Audio source for laser, player damage & powerups
 
     ///
-    /// AMMO VARIABLES
+    /// AMMO (ENERGY) VARIABLES
     ///
     [SerializeField] int _maxAmmo, _currentAmmo;
     [SerializeField] AudioClip _out_of_ammo_sfx;
     ///
-    /// AMMO VARIABLES - END
+    /// AMMO (ENERGY) VARIABLES - END
     ///
 
     /// 
@@ -126,14 +126,19 @@ public class Player : MonoBehaviour
     /// 
     /// SHIELD VARIABLES - END
     /// 
-
+    [SerializeField] GameObject _bonusLifeShield;
     [SerializeField] bool _bonusLife;
+    [SerializeField] AudioClip _bonusLifeSFX;
     bool _bonusLifeOncePerLevel;
+    ///
+    /// REPAIR 'Health' VARIABLES
+    ///
+    private bool _repairBotsActive;
+    [SerializeField] GameObject _repairBotsPE;
+    ///
+    /// REPAIR 'Health' VARIABLES - END
+    ///
 
-    /// 
-    /// 
-    /// LaserEnergy
-    /// Repair
     /// Ultimate
     /// </summary>
 
@@ -167,11 +172,28 @@ public class Player : MonoBehaviour
     void Start()
     {
         _playerLives = 3;
+        _bonusLifeOncePerLevel = false;
         isGameOver = false;
         transform.position = new Vector3(0, -5, 0); // offical game (0, -3.5f, 0);
 
         _originalThrustersLocalScale = _thruster_left.transform.localScale;
         ////transform.position = new Vector3(0.3834784f, -5, 0); // exactly fire two lasers into one enemy
+        ///
+        //
+        // Initialize Player/Ship variables & set GUI
+        // Ship speed
+        // At the start of the game the ship has taken damage to both 
+        // port & starboard sides so speed will reduced by Damage(), Damage()
+        // Disable _repairBotsActive, shields, torpedo & laser cannons
+        //
+        ///
+        /// REPAIR 'Health' VARIABLES INIT
+        /// Repair Bots are a Particle Effect when Repairs Powerup picked up
+        ///
+        _repairBotsActive = false;
+        ///
+        /// REPAIR 'Health' VARIABLES INIT - END
+        /// 
 
         _speed = _spaceshipSpeed; // initialize Ship/Player speed
 
@@ -440,8 +462,12 @@ public class Player : MonoBehaviour
         {
             if (_bonusLife)
             {
+                //Debug.Log("Bonus Life used");
                 //UIManager.Instance.UpdateShieldBonusUI(_shieldBonus);
                 _bonusLife = false;
+                _bonusLifeShield.SetActive(false);
+                _audioSource.PlayOneShot(_bonusLifeSFX, 5f);
+                UIManager.instance.UpdateShieldBonusUI(_shieldBonus);
             }
             else
             {
@@ -505,7 +531,7 @@ public class Player : MonoBehaviour
     {
         _damagedLeft = true;
         _shipDamageLeft.SetActive(true);
-        _audioSource.PlayOneShot(_explosionSFX);
+        _audioSource.PlayOneShot(_explosionSFX, 5f);
         //_animShipDamageLeft.SetTrigger("PlayerDamageLeft");
     }
 
@@ -513,7 +539,7 @@ public class Player : MonoBehaviour
     {
         _damagedRight = true;
         _shipDamageRight.SetActive(true);
-        _audioSource.PlayOneShot(_explosionSFX);
+        _audioSource.PlayOneShot(_explosionSFX, 5f);
         //_animShipDamageRight.SetTrigger("PlayerDamageRight");
     }
 
@@ -682,6 +708,7 @@ public class Player : MonoBehaviour
     ///
     /// AMMO FILL FUNCTION
     ///
+
     private void LaserCannonsRefill(int ammo)
     {
         _currentAmmo = _currentAmmo + ammo;
@@ -693,7 +720,7 @@ public class Player : MonoBehaviour
     /// AMMO FILL FUNCTION - END
     ///
 
-    void RepairShip() { }
+
 
     /// 
     /// CalculateShipSpeed
@@ -824,4 +851,85 @@ public class Player : MonoBehaviour
     {
         _audioSource.PlayOneShot(_explosionSFX);
     }
+
+    ///
+    /// REPAIR 'Health' Functions
+    /// 
+    private void RepairShip()
+    {
+        if (_playerLives < 3)
+        {
+            _playerLives++;
+            UIManager.instance.UpdatePlayerLives(_playerLives);
+
+            if (_damagedLeft && _damagedRight)
+            {
+                int RND_Damage = Random.Range(0, 2);
+                if (RND_Damage == 0)
+                {
+                    SpaceshipRepairLeft();
+                }
+                else if (RND_Damage == 1)
+                {
+                    SpaceshipRepairRight();
+                }
+            }
+            else if (_damagedLeft && !_damagedRight)
+            {
+                SpaceshipRepairLeft();
+            }
+            else if (!_damagedLeft && _damagedRight)
+            {
+                SpaceshipRepairRight();
+            }
+            RepairBotsDeployed();
+        }
+        else
+        {
+            if (!_bonusLifeOncePerLevel)
+            {
+                ///
+                /// REPAIR POWERUP when No Shields
+                ///
+                _shieldBonus++;
+                UIManager.instance.UpdateShieldBonusUI(_shieldBonus);
+                if (_shieldBonus == 3) {
+                    _bonusLifeShield.SetActive(true);
+                }
+                ///
+                /// REPAIR POWERUP when No Shields - END
+                ///
+            }
+        }
+    }
+
+    private void RepairBotsDeployed()
+    {
+        _repairBotsActive = !_repairBotsActive;
+        _repairBotsPE.SetActive(_repairBotsActive);
+        _repairBotsActive = !_repairBotsActive;
+    }
+
+    private void RepairBotsEnabled()
+    {
+        // Paladin announcement 'RepairBots restored'
+        // Play RepairBots burst
+        _repairBotsActive = true;
+        RepairBotsDeployed();
+    }
+
+    private void SpaceshipRepairLeft() // ship port side damage
+    {
+        _damagedLeft = false;
+        _shipDamageLeft.SetActive(false);
+    }
+
+    private void SpaceshipRepairRight() // ship starboard side damage
+    {
+        _damagedRight = false;
+        _shipDamageRight.SetActive(false);
+    }
+    ///
+    /// REPAIR 'Health' Functions - END
+    /// 
 }

@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     /// 
 
     [SerializeField] float _speed = 4.0f;
+    float _tempSpeed;
     [SerializeField] GameObject _enemyLaserPrefab;
 
     [SerializeField] int _scoreValue = 0;
@@ -77,6 +78,9 @@ public class Enemy : MonoBehaviour
     {
         CalculateMovement();
 
+        ///
+        /// FREEZE/EMP TORPEDO - If enemy is frozen, can shoot, _CanFire is reset upon Thaw
+        /// 
         if (Time.time > _canFire && WithinFiringRange() && !isFrozen)
         {
             _fireRate = Random.Range(2f, 7f);
@@ -170,4 +174,26 @@ public class Enemy : MonoBehaviour
         WaveSpawner.instance.EnemyDeath();
         Destroy(this.gameObject, .5f);
     }
+
+    ///
+    /// FREEZE/EMP TORPEDO Secondary Fire Functions
+    ///
+    public void FreezeEnemyShip(float speed)
+    {
+        _tempSpeed = _speed;
+        _speed = speed;
+        isFrozen = true;
+    }
+
+    public void ThawedEnemyShip()
+    {
+        _speed = _tempSpeed;
+        isFrozen = false;
+        _canFire = Time.time + _fireRate; // reset CanFire time after thaw
+    }
+
+    public bool Frozen() { return isFrozen; }
+    ///
+    /// FREEZE/EMP TORPEDO Secondary Fire Functions - END
+    ///
 }

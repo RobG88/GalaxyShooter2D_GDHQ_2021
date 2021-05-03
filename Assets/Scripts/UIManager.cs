@@ -8,15 +8,25 @@ public class UIManager : MonoSingleton<UIManager>
     [SerializeField] Text _scoreText;
     [SerializeField] Image _livesRemainingImage;
     [SerializeField] Sprite[] _livesSprites;
+
     [SerializeField] Text _shipWrap;
+
     [SerializeField] Text _playerLives;
+
+    [SerializeField] GameObject[] _shieldBonus;
+    [SerializeField] Text _bonusLife_text;
+
     [SerializeField] Text _gameOverText;
     [SerializeField] float BlinkTime;
+
     [SerializeField] Text _enemiesRemaing;
+
     [SerializeField] Text _currentLevel;
+
     [SerializeField] Text _waveName;
     [SerializeField] Text _waveIncomingText;
     [SerializeField] Text _waveIncomingSecondsText;
+
     [SerializeField] Text _restartGameText;
 
     [SerializeField] GameObject _PowerUp_Tripleshot;
@@ -48,6 +58,9 @@ public class UIManager : MonoSingleton<UIManager>
     /// MAIN THRUSTERS Variable - END
     ///
 
+    bool ShieldBonusActivated;
+    WaitForSeconds BonusLifePause = new WaitForSeconds(.25f);
+
     string textToBlink;
 
     bool CheatKeyEnabled;
@@ -64,20 +77,54 @@ public class UIManager : MonoSingleton<UIManager>
         _restartGameText.gameObject.SetActive(false);
     }
 
-    /*
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            ActiveTripleShotUI();
-        }
-    }*/
-
     public void UpdateScore(int playerScore)
     {
         if (_scoreText != null)
         {
             _scoreText.text = playerScore.ToString("#,#");
+        }
+    }
+
+
+    public void UpdatePlayerLives(int livesRemaining)
+    {
+        _livesRemainingImage.sprite = _livesSprites[livesRemaining];
+        //_livesRemainingText.text = "LIVES = " + livesRemaining;
+        _playerLives.text = livesRemaining.ToString();
+
+        if (livesRemaining == 0)
+        {
+            DisplayGameOver();
+        }
+    }
+
+    public void UpdateShieldBonusUI(int shieldBonus)
+    {
+        if (shieldBonus > 0 && shieldBonus < 4)
+        {
+            _shieldBonus[shieldBonus - 1].SetActive(true);
+            if (shieldBonus == 3)
+            {
+                ShieldBonusActivated = true;
+                _bonusLife_text.gameObject.SetActive(true);
+                StartCoroutine(BonusLifeMessage());
+            }
+        }
+        else if (shieldBonus == 0)
+        {
+            ShieldBonusActivated = false;
+            _bonusLife_text.gameObject.SetActive(false);
+            foreach (var shield in _shieldBonus)
+            {
+                shield.SetActive(false);
+            }
+        }
+        else if (shieldBonus > 3)
+        {
+            // TODO:
+            // Display MAX SHIELD PROTECTION
+            // Blink
+            // Paladin "Max Shield Protection reached"
         }
     }
 
@@ -297,5 +344,22 @@ public class UIManager : MonoSingleton<UIManager>
         //SceneManager.LoadSceneAsync(2);
         GameManager.instance.PauseGame();
         SceneManager.LoadScene(2);
+    }
+
+    IEnumerator BonusLifeMessage()
+    {
+        Color colorBlue;
+        Color colorSilver;
+
+        ColorUtility.TryParseHtmlString("#0d00ff", out colorBlue);
+        ColorUtility.TryParseHtmlString("#a6a6a6", out colorSilver);
+
+        while (ShieldBonusActivated)
+        {
+            _bonusLife_text.color = colorBlue;
+            yield return BonusLifePause;
+            _bonusLife_text.color = colorSilver;
+            yield return BonusLifePause;
+        }
     }
 }
