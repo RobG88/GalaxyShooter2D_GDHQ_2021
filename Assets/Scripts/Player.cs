@@ -481,18 +481,18 @@ public class Player : MonoBehaviour
                 if (_playerLives == 0)
                 {
                     //isGameOver = true;  Set in PlayerDeath() 
-                    PlayerDeathSequence();
+                    //PlayerDeathSequence();
                     ///
                     /// CAMERA SHAKE done via CINEMACHINE
                     /// 
-                    //CinemachineShake.Instance.ShakeCamera(16f, 4f);
-                    //PlayerDeathSequence();
+                    CinemachineShake.Instance.ShakeCamera(16f, 4f);
+                    PlayerDeathSequence();
                     return;
                 }
                 ///
                 /// CAMERA SHAKE done via CINEMACHINE
                 /// 
-                //CinemachineShake.Instance.ShakeCamera(5f, 1f);
+                CinemachineShake.Instance.ShakeCamera(5f, 1f);
                 SpaceshipDamaged();
             }
         }
