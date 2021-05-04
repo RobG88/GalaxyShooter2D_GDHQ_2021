@@ -185,7 +185,7 @@ public class WaveSpawner : MonoBehaviour
 
             // TODO: if Shield is active do not spawn another
 
-            GameObject newPowerUp = Instantiate(_powerUpPrefabs[_RNDPowerUp], new Vector3(Random.Range(-6, 6), Random.Range(7, 14), 0), Quaternion.identity);
+            GameObject newPowerUp = Instantiate(_powerUpPrefabs[_RNDPowerUp], new Vector3(Random.Range(-8, 8), Random.Range(15, 16), 0), Quaternion.identity);
             newPowerUp.transform.parent = _powerUpContainer.transform;
             yield return new WaitForSeconds(_waitTimeBetweenPowerUpSpawns);
         }

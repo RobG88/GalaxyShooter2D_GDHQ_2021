@@ -81,13 +81,6 @@ public class PowerUp : MonoBehaviour
     {
         float respawnX = Random.Range(_respawnXmin, _respawnXmax);
         _spawnPos.x = respawnX;
-        // CHEAT KEYS SHOULD BE GAMEMANAGER GLOBAL VARS
-        /*
-        if (CHEAT_LINE_THEM_UP)
-        {
-            _enemyPos.x = 0;  // testing, line enemy for two lasers intersecting collider}
-        }
-        */
         _spawnPos.y = Random.Range(_respawnYmin, _respawnYmax);
         transform.position = _spawnPos;
     }
