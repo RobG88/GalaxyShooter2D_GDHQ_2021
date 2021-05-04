@@ -5,12 +5,12 @@ public class CinemachineShake : MonoBehaviour
 {
     public static CinemachineShake Instance { get; private set; }
 
-    private CinemachineVirtualCamera cinemachineVirtualCamera;
-    private float shakeTimer;
-    private float shakeTimerTotal;
-    private float startingIntensity;
+    CinemachineVirtualCamera cinemachineVirtualCamera;
+    float shakeTimer;
+    float shakeTimerTotal;
+    float startingIntensity;
 
-    private void Awake()
+    void Awake()
     {
         Instance = this;
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
@@ -28,7 +28,7 @@ public class CinemachineShake : MonoBehaviour
         shakeTimer = time;
     }
 
-    private void Update()
+    void Update()
     {
         if (shakeTimer > 0)
         {
@@ -40,5 +40,4 @@ public class CinemachineShake : MonoBehaviour
                 Mathf.Lerp(startingIntensity, 0f, 1 - shakeTimer / shakeTimerTotal);
         }
     }
-
 }
