@@ -72,7 +72,7 @@ public class Seeker : MonoBehaviour
             sr.enabled = false;
             gameObject.GetComponent<Collider2D>().enabled = false;
             FreezeFrame();
-            Destroy(this.gameObject, 2f);
+            Destroy(this.gameObject, .1f);
         }
     }
 

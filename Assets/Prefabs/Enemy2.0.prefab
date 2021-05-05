@@ -19451,6 +19451,7 @@ GameObject:
   - component: {fileID: 8618811156043889139}
   - component: {fileID: 4432303638864079081}
   - component: {fileID: 8618811156043889148}
+  - component: {fileID: 1010568602168023514}
   m_Layer: 0
   m_Name: Enemy2.0
   m_TagString: Enemy
@@ -19588,7 +19589,6 @@ MonoBehaviour:
   _scoreValue: 10
   _collisionWithShieldExplosionFX: {fileID: 5790738569388071075}
   CHEAT_LINE_THEM_UP: 0
-  _enemyLaser: 6
   _canFire: -1
 --- !u!82 &4432303638864079081
 AudioSource:
@@ -19705,3 +19705,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1010568602168023514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8618811156043889136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a878febac468d5d489710cd9ee0b3337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _originalMat: {fileID: 0}
+  _frozenMat: {fileID: 2100000, guid: 1f1b922898820b043bdde591d3037071, type: 2}
+  _cloakingMat: {fileID: 0}

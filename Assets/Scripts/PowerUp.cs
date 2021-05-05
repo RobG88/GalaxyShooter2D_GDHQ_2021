@@ -11,6 +11,7 @@ public class PowerUp : MonoBehaviour
         Speed,
         EnergyCell,
         Repair,
+        FreezeTorpedo,
         Ultimate
     }
 
@@ -27,7 +28,7 @@ public class PowerUp : MonoBehaviour
     SpriteRenderer _spriteRenderer;
     BoxCollider2D _collider2D;
 
-    float _destoryYAxisThreshold = -10.0f;
+    [SerializeField] float _destoryYAxisThreshold = -10.0f;
 
     Vector3 _spawnPos = new Vector3(0, 0, 0); // Random position of enemy once re-spawned X(-8,8) Y(12,9)
 
@@ -87,7 +88,7 @@ public class PowerUp : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        //Debug.Log(gameObject.name + " just collided with " + other.tag);
+        Debug.Log(gameObject.name + " just collided with " + other.tag);
         if (other.CompareTag("Player"))
         {
             Player player = other.transform.GetComponent<Player>();

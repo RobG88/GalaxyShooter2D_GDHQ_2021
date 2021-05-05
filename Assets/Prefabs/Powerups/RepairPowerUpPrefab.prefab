@@ -92,18 +92,18 @@ GameObject:
   m_Component:
   - component: {fileID: 114695767942367447}
   - component: {fileID: 1379249794898102362}
-  - component: {fileID: 6245727428912862928}
   - component: {fileID: 2187645812519867065}
   - component: {fileID: 4068135329394082052}
   - component: {fileID: 5638429206620263740}
   - component: {fileID: 7849270283630167364}
+  - component: {fileID: 581346159}
   m_Layer: 0
   m_Name: RepairPowerUpPrefab
   m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &114695767942367447
 Transform:
   m_ObjectHideFlags: 0
@@ -138,7 +138,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 221f8bb1353ba8c468bce73c931b85fd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,8 +156,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1644280989
-  m_SortingLayer: 0
+  m_SortingLayerID: -427940027
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 82ab992ae357dfd4bb01c5eef4655e74, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -170,20 +170,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6245727428912862928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4544930907584157288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a9de2dfac38ea448989aa5f57dde7d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 45
-  cam: {fileID: 0}
 --- !u!58 &2187645812519867065
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -333,4 +319,25 @@ MonoBehaviour:
   _speed: 4
   _powerUpShieldCollisionFX: {fileID: 0}
   _powerUpPickUpSFX: {fileID: 0}
+  _rotateOnYAxis: 0
+  _destoryYAxisThreshold: -10
+  CHEAT_LINE_THEM_UP: 0
+--- !u!114 &581346159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4544930907584157288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c4edb0a4f53094d91c054c278af9d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerUpType: 4
+  _speed: 4
+  _powerUpShieldCollisionFX: {fileID: 0}
+  _powerUpPickUpSFX: {fileID: 0}
+  _rotateOnYAxis: 0
+  _destoryYAxisThreshold: -10
   CHEAT_LINE_THEM_UP: 0

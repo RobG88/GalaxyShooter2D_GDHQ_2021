@@ -138,11 +138,6 @@ public class Player : MonoBehaviour
     ///
     /// REPAIR 'Health' VARIABLES - END
     ///
-
-    /// Ultimate
-    /// </summary>
-
-
     ///
     /// FREEZE/EMP TORPEDO second fire VARIABLES
     ///
@@ -152,6 +147,9 @@ public class Player : MonoBehaviour
     ///
     /// FREEZE/EMP TORPEDO second fire VARIABLES - END
     ///
+
+    /// Ultimate
+    /// </summary>
 
     // CHEAT KEYS
     //
@@ -438,7 +436,20 @@ public class Player : MonoBehaviour
     /// AMMO BOOL FUNCTION
     ///
 
-    private void FireFreezeTorpedo() { }
+    ///
+    /// FREEZE/EMP TORPEDO second fire User Input
+    ///
+    private void FireFreezeTorpedo()
+    {
+        // Remove 'Torpedo' Sprite once player launches
+        _freezeTorpedoLoaded = false;
+        _freezeTorpedoSprite.SetActive(false);
+        var _torpedoLaunch = new Vector3(0, 1.85f, 0);
+        Instantiate(_freezeTorpedo, _freezeTorpedoSprite.transform.position, Quaternion.identity);
+    }
+    ///
+    /// FREEZE/EMP TORPEDO second fire User Input - END
+    ///
 
     ///
     /// SHIELDS - SHIP DAMAGE ROUTINE
@@ -563,6 +574,7 @@ public class Player : MonoBehaviour
         _thruster_right.SetActive(false);
         _shipDamageLeft.SetActive(false);
         _shipDamageRight.SetActive(false);
+        _freezeTorpedoSprite.SetActive(false);
         GameManager.instance.OnPlayerDeath();
         isGameOver = true;
         UIManager.instance.GameOver(isGameOver);
@@ -574,8 +586,14 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Damage();
+            bool FrozenEnemy = other.GetComponent<Enemy>().Frozen();
+            if (!FrozenEnemy)
+            {
+                Damage();
+            }
         }
+
+        if (other.CompareTag("EnemyLaser")) Damage();
 
         if (other.CompareTag("PowerUp"))
         {
