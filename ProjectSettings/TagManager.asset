@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Laser
   - Shield
+  - EnemyLaser
+  - Torpedo
   layers:
   - Default
   - TransparentFX

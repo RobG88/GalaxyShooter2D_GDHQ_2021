@@ -16,6 +16,7 @@ public class Seeker : MonoBehaviour
     private Rigidbody2D rb;
     private AudioSource _sound;
     private SpriteRenderer sr;
+    GameObject _rocket;
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class Seeker : MonoBehaviour
         _sound = GetComponent<AudioSource>();
         sr = gameObject.GetComponentInChildren<SpriteRenderer>();
         _sound.PlayOneShot(_sound.clip);
+        _rocket = GameObject.Find("Rocket");
     }
 
     void FixedUpdate()
@@ -67,12 +69,13 @@ public class Seeker : MonoBehaviour
         if (other.tag == "Enemy")
         {
             _sound.clip = _torpedoExplosionSFX;
-            _sound.PlayOneShot(_sound.clip);
+            _sound.PlayOneShot(_sound.clip, 4f);
             Instantiate(_freezeExplosion, transform.position, transform.rotation);
+            _rocket.SetActive(false);
             sr.enabled = false;
             gameObject.GetComponent<Collider2D>().enabled = false;
             FreezeFrame();
-            Destroy(this.gameObject, .1f);
+            Destroy(this.gameObject, 1.5f);
         }
     }
 

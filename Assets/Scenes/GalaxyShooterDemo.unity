@@ -1032,6 +1032,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3601855828134517578, guid: a74ec2fb8187c6141ad8c8f6ee936d3a, type: 3}
+      propertyPath: _freezeTorpedo
+      value: 
+      objectReference: {fileID: 1433424130164345219, guid: ead2ff50d8e2d9d49bc8402c0f5b7b4d, type: 3}
+    - target: {fileID: 3601855828134517578, guid: a74ec2fb8187c6141ad8c8f6ee936d3a, type: 3}
       propertyPath: _freezeTorpedoSprite
       value: 
       objectReference: {fileID: 1114881696}
@@ -12424,63 +12428,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1484379265}
   m_CullTransparentMesh: 1
---- !u!1001 &1515888450
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2324533114961453435, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_Name
-      value: FreezeSeekerTorpedoPrefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_RootOrder
-      value: 21
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2324533114961453436, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 83a81f49f1e138e4aa7a0db5e49ba81a, type: 3}
 --- !u!1 &1520733733
 GameObject:
   m_ObjectHideFlags: 0
@@ -14615,8 +14562,8 @@ MonoBehaviour:
   _spawnState: 2
   waves:
   - name: Reinforcements Attack!
-    enemyPrefab: {fileID: 8618811156043889136, guid: af57a517c2a794640853c20bcecc7150, type: 3}
-    enemyCount: 4
+    enemyPrefab: {fileID: 7330949578632108832, guid: 39b973d9c6d02514cb63bce74e8eead9, type: 3}
+    enemyCount: 12
     spawnRate: 0
     delayBetweenEnemySpawns: 0.4
   - name: The Reinforcements
@@ -14643,11 +14590,12 @@ MonoBehaviour:
   _waveCountdown: 0
   _enemyContainer: {fileID: 1520733733}
   _powerUpPrefabs:
-  - {fileID: 2892270531928339319, guid: 9dc8cfa0d139fb346a910d53194f3f97, type: 3}
+  - {fileID: 7436080386340361089, guid: 3ced28374f8d1f54a819d1eab4f3e8b7, type: 3}
   - {fileID: 5647977108281404022, guid: 7daa1940f2c26c149b7427b13023e6a5, type: 3}
+  - {fileID: 2892270531928339319, guid: 9dc8cfa0d139fb346a910d53194f3f97, type: 3}
+  - {fileID: 6712368121349629788, guid: 035dba9f75201734e8cc4f7a9cab4ae8, type: 3}
   - {fileID: 7810662798046527754, guid: e9ca59404e9862b4195d40d6e8e62e49, type: 3}
   - {fileID: 5647977108281404022, guid: 7f0d9e37f1e20854f8d7234628f825f1, type: 3}
-  - {fileID: 6712368121349629788, guid: 035dba9f75201734e8cc4f7a9cab4ae8, type: 3}
   _powerUpContainer: {fileID: 1314596240}
   _minPowerUpSpawnStart: 2
   _maxPowerUpSpawnStart: 6
@@ -32583,67 +32531,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 150
---- !u!1001 &2463709146739499960
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_RootOrder
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464897557487963454, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7436080386340361089, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_Name
-      value: PowerUpFreeezeTorpedo
-      objectReference: {fileID: 0}
-    - target: {fileID: 7436080386340361089, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 96a61e85d160d0b4aafa6e83cff56b4c, type: 3}
 --- !u!1 &4920994597230989017
 GameObject:
   m_ObjectHideFlags: 0

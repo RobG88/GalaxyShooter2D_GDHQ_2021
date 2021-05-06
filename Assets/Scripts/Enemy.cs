@@ -137,7 +137,7 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Laser") || other.CompareTag("Player") || other.CompareTag("Shield"))
+        if (other.CompareTag("Torpedo") || other.CompareTag("Laser") || other.CompareTag("Player") || other.CompareTag("Shield"))
         {
             _speed = 0;
 

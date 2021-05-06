@@ -88,7 +88,7 @@ public class PowerUp : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(gameObject.name + " just collided with " + other.tag);
+        //Debug.Log(gameObject.name + " just collided with " + other.tag);
         if (other.CompareTag("Player"))
         {
             Player player = other.transform.GetComponent<Player>();
