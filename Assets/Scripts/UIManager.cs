@@ -44,6 +44,7 @@ public class UIManager : MonoSingleton<UIManager>
     /// AMMO Variables
     ///
     [SerializeField] Slider _ammoSlider;
+    [SerializeField] Text _ammoCount;
     //[SerializeField] Gradient _ammoBarGradient;
     //[SerializeField] Image _ammoBarFill;
     ///
@@ -266,6 +267,7 @@ public class UIManager : MonoSingleton<UIManager>
     public void SetAmmo(int ammo)
     {
         _ammoSlider.value = ammo;
+        _ammoCount.text = ammo + "/" + _ammoSlider.maxValue;
     }
     ///
     /// AMMO UI Functions - END
