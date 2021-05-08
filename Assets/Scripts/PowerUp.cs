@@ -37,16 +37,19 @@ public class PowerUp : MonoBehaviour
     float _respawnYmin = 12.0f;
     float _respawnYmax = 15.0f;
 
-    /// <summary>
-    /// Testing: force Power-Up to drop where placed
-    /// </summary>
+    // Testing: force Power-Up to drop where placed
     [SerializeField] bool CHEAT_LINE_THEM_UP = false;
+
+    [SerializeField] Transform player;
 
     void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider2D = GetComponent<BoxCollider2D>();
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
     }
     void Start()
     {
@@ -56,14 +59,22 @@ public class PowerUp : MonoBehaviour
 
     void Update()
     {
-        CalculateMovement();
+        if (GameManager._magnet)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, player.position, _speed * Time.deltaTime);
+        }
+        else
+        {
+            CalculateMovement();
+        }
     }
 
     private void CalculateMovement()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        if (_rotateOnYAxis) {
+        if (_rotateOnYAxis)
+        {
             transform.Rotate(0f, _rotationSpeed * Time.deltaTime, 0f);
         }
 
@@ -97,7 +108,7 @@ public class PowerUp : MonoBehaviour
                 _spriteRenderer.enabled = false;
                 _collider2D.enabled = false;
                 _audioSource.Play();
-                Destroy(this.gameObject,.5f);
+                Destroy(this.gameObject, .5f);
             }
         }
 

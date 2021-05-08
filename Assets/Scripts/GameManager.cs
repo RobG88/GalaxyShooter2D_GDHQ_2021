@@ -14,10 +14,13 @@ public class GameManager : MonoBehaviour
     public static bool GameIsPaused;
 
     public static bool _disablePowerUp_Spawning = false;
+    public static bool _magnet = false;
 
     [SerializeField] bool _isGameOver = false;
     [SerializeField] bool _gamePaused = false;
     [SerializeField] GameObject _pausePanel;
+
+    [SerializeField] bool _magnet_enabled = false;
 
     void Awake()
     {
@@ -42,6 +45,20 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P) && !_isGameOver)
         {
             PauseGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            // POWERUP COLLECT: MAGNET POWER - "CHEAT KEY"
+            _magnet = true;
+            _magnet_enabled = _magnet;
+        }
+
+        if (Input.GetKeyUp(KeyCode.V))
+        {
+            // POWERUP COLLECT: MAGNET POWER - "CHEAT KEY"
+            _magnet = false;
+            _magnet_enabled = _magnet;
         }
 
         /*
