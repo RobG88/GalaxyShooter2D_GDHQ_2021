@@ -148,8 +148,15 @@ public class Player : MonoBehaviour
     /// FREEZE/EMP TORPEDO second fire VARIABLES - END
     ///
 
-    /// Ultimate
-    /// </summary>
+    /// ULTIMATE POWER-UP, NEGATIVE PICK-UP :: VARIABLES
+    /// 
+    bool _ultimate;
+    [SerializeField] bool _ultimateReset;
+    bool _ultimateSpinning;
+    Quaternion _originalRotation;
+    float _rotationSpriteSpeed;
+    /// ULTIMATE POWER-UP, NEGATIVE PICK-UP :: VARIABLES END
+
 
     // CHEAT KEYS
     //
@@ -250,6 +257,17 @@ public class Player : MonoBehaviour
     {
         if (GameManager.PlayerIsAlive)
         {
+            if (_ultimateReset)
+            {
+                float rotationSpeed = 10f;
+                transform.rotation = Quaternion.Slerp(transform.rotation, _originalRotation, rotationSpeed * Time.deltaTime);
+
+                if (transform.rotation == _originalRotation)
+                {
+                    _ultimateReset = false;
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire && Ammo() && !_freezeTorpedoLoaded)
             //if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
             {
@@ -327,8 +345,24 @@ public class Player : MonoBehaviour
         // Animate Ship Tilting/Banking
         _anim.SetFloat("Tilt", horizontalInput); // * 2.0f);
 
-        direction = new Vector3(horizontalInput, verticalInput, 0);
-        transform.Translate(direction * _speed * Time.deltaTime);
+        if (_ultimate) // Out of Control horizontalInput verticalInput
+        {
+            direction = new Vector3(verticalInput, horizontalInput, 0);
+            //direction = new Vector3((verticalInput * Random.Range(-1, 2)), (horizontalInput * Random.Range(-1, 2)), 0);
+            //transform.Translate((direction * Random.Range(-1, 2)) * (_speed * Random.Range(-1f, 3f)) * Time.deltaTime);
+            transform.Translate(direction * (_speed * Random.Range(-1f, 3f)) * Time.deltaTime);
+            transform.Rotate(0f, 0f, _rotationSpriteSpeed * Time.deltaTime);
+        }
+        else
+        {
+            //direction = new Vector3(horizontalInput, verticalInput, 0);
+            //transform.Translate(direction * _speed * Time.deltaTime);
+            direction = new Vector3(horizontalInput, verticalInput, 0);
+            transform.Translate(direction * _speed * Time.deltaTime);
+        }
+
+
+
 
 
         /////////////////////////////////////////////////////////////////////////////////
@@ -597,7 +631,7 @@ public class Player : MonoBehaviour
 
         if (other.CompareTag("PowerUp"))
         {
-            if (_shieldActive) return;
+            if (_shieldActive || _ultimateSpinning) return;
 
             string PowerUpToActivate;
             PowerUpToActivate = other.transform.GetComponent<PowerUp>().PowerType().ToString();
@@ -717,6 +751,20 @@ public class Player : MonoBehaviour
             case "EnergyCell":
                 LaserCannonsRefill(10);
                 break;
+
+            case "Ultimate":
+                //Debug.Log("PowerUp Pickup = " + _powerUpType);
+                _originalRotation = transform.rotation;
+                _rotationSpriteSpeed = Random.Range(-360, 360);
+                _ultimate = true;
+                _ultimateSpinning = true;
+                //float _UltimateTimer = Time.time + Random.Range(2f, 4f);
+                float _UltimateTimer = Time.time + Random.Range(9f, 15f);
+                DropShield();
+                if (_playerLives > 1) Damage();
+                if (_playerLives > 1) Damage();
+                StartCoroutine(UltimateCoolDown(_UltimateTimer));
+                break;
         }
         _audioSource.pitch = 1.0f;
         //_audioSource.PlayOneShot(_PowerUpSFX);
@@ -776,6 +824,7 @@ public class Player : MonoBehaviour
         ///
         /// THRUSTERS - SPEED CALC - END
         /// 
+        if (_ultimate) _newSpeed = 3f;
         return _newSpeed;
     }
 
@@ -911,7 +960,8 @@ public class Player : MonoBehaviour
                 ///
                 _shieldBonus++;
                 UIManager.instance.UpdateShieldBonusUI(_shieldBonus);
-                if (_shieldBonus == 3) {
+                if (_shieldBonus == 3)
+                {
                     _bonusLifeShield.SetActive(true);
                 }
                 ///
@@ -950,4 +1000,20 @@ public class Player : MonoBehaviour
     ///
     /// REPAIR 'Health' Functions - END
     /// 
+
+    IEnumerator UltimateCoolDown(float timer)
+    {
+        while (Time.time < timer)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        _ultimate = false;
+        _ultimateReset = true;
+        _ultimateSpinning = false;
+        LaserCannonsRefill(15);
+        Activate_PowerUp_Tripleshot();
+        RepairShip();
+        RepairShip();
+        Activate_PowerUp_Shields();
+    }
 }
