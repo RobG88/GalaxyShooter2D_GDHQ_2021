@@ -66,7 +66,7 @@ public class Laser : MonoBehaviour
     {
         if (other.CompareTag("Enemy") || other.CompareTag("EnemyShield"))
         {
-            Debug.Log("Collided with " + other.tag);
+            //Debug.Log("Collided with " + other.tag);
             _spriteRenderer.enabled = false;
             _collider2D.enabled = false;
             _speed = 0;
