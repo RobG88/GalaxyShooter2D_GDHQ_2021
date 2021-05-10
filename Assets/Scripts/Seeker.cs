@@ -8,7 +8,7 @@ public class Seeker : MonoBehaviour
 {
     [SerializeField] float _speed = 2.0f;
     [SerializeField] float _rotateSpeed = 200.0f;
-    [SerializeField] int invertMissle = 1;
+    //[SerializeField] int invertMissle = 1;
     [SerializeField] Transform target;
     [SerializeField] List<GameObject> enemyList;
     [SerializeField] GameObject _freezeExplosion;

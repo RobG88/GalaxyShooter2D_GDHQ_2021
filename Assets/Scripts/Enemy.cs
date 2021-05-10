@@ -57,6 +57,17 @@ public class Enemy : MonoBehaviour
     /// FREEZE/EMP TORPEDO Secondary Fire Variable - END
     ///
 
+    /// 
+    /// SHIELD VARIABLES
+    /// 
+    [SerializeField] bool _shieldActive = false;
+    [SerializeField] GameObject _shield;
+    [SerializeField] int _shieldPower;
+    EnemyShield _enemyShield;
+    /// 
+    /// SHIELD VARIABLES - END
+    /// 
+
     void Awake()
     {
         _anim = GetComponent<Animator>();
@@ -76,6 +87,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.U)) { Activate_Shields(); }
+
         CalculateMovement();
 
         ///
@@ -137,6 +150,8 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Laser") && _shieldActive) { _enemyShield.Damage(); return; }
+
         if (other.CompareTag("Torpedo") || other.CompareTag("Laser") || other.CompareTag("Player") || other.CompareTag("Shield"))
         {
             _speed = 0;
@@ -196,4 +211,17 @@ public class Enemy : MonoBehaviour
     ///
     /// FREEZE/EMP TORPEDO Secondary Fire Functions - END
     ///
+
+    public void Activate_Shields()
+    {
+        _shieldActive = true;
+        _shield.SetActive(_shieldActive);
+        _enemyShield = gameObject.GetComponentInChildren<EnemyShield>();
+    }
+
+    public void ShieldsDestroyed()
+    {
+        _shieldActive = false;
+        _shield.SetActive(_shieldActive);
+    }
 }

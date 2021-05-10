@@ -145,12 +145,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpType: 6
-  _speed: 0
+  _speed: 4
   _powerUpShieldCollisionFX: {fileID: 4852694503607557486}
   _powerUpPickUpSFX: {fileID: 8300000, guid: 9f8214028eb445346bc91016740ecd7d, type: 3}
   _rotateOnYAxis: 1
   _destoryYAxisThreshold: -10
   CHEAT_LINE_THEM_UP: 0
+  player: {fileID: 0}
 --- !u!82 &4262309340864147251
 AudioSource:
   m_ObjectHideFlags: 0
