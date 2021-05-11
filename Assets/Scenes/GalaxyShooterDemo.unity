@@ -14276,10 +14276,10 @@ MonoBehaviour:
   _spawnState: 2
   waves:
   - name: Reinforcements Attack!
-    enemyPrefab: {fileID: 7330949578632108832, guid: 39b973d9c6d02514cb63bce74e8eead9, type: 3}
-    enemyCount: 1
+    enemyPrefab: {fileID: 6119608634017273475, guid: aa043528125b4b04d94521ecab216bf3, type: 3}
+    enemyCount: 5
     spawnRate: 0
-    delayBetweenEnemySpawns: 0.1
+    delayBetweenEnemySpawns: 0.5
   - name: The Reinforcements
     enemyPrefab: {fileID: 8618811156043889136, guid: af57a517c2a794640853c20bcecc7150, type: 3}
     enemyCount: 4
@@ -14304,15 +14304,11 @@ MonoBehaviour:
   _waveCountdown: 0
   _enemyContainer: {fileID: 1520733733}
   _powerUpPrefabs:
-  - {fileID: 5647977108281404022, guid: 7daa1940f2c26c149b7427b13023e6a5, type: 3}
-  - {fileID: 2892270531928339319, guid: 9dc8cfa0d139fb346a910d53194f3f97, type: 3}
   - {fileID: 7810662798046527754, guid: e9ca59404e9862b4195d40d6e8e62e49, type: 3}
-  - {fileID: 5647977108281404022, guid: 7f0d9e37f1e20854f8d7234628f825f1, type: 3}
-  - {fileID: 6712368121349629788, guid: 035dba9f75201734e8cc4f7a9cab4ae8, type: 3}
-  - {fileID: 4671697316987992379, guid: 0e73323daf35b2746bf2f3ff38e13c87, type: 3}
+  - {fileID: 2892270531928339319, guid: 9dc8cfa0d139fb346a910d53194f3f97, type: 3}
   _powerUpContainer: {fileID: 1314596240}
-  _minPowerUpSpawnStart: 2
-  _maxPowerUpSpawnStart: 2.1
+  _minPowerUpSpawnStart: 3
+  _maxPowerUpSpawnStart: 5
 --- !u!4 &1897445044
 Transform:
   m_ObjectHideFlags: 0

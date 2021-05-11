@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject _collisionWithShieldExplosionFX;
     [SerializeField] bool CHEAT_LINE_THEM_UP = false;
 
+    [SerializeField] GameObject _cloakingObject;
+
     Animator _anim;
     AudioSource _audioSource;
     BoxCollider2D _collider2D;
@@ -68,12 +70,19 @@ public class Enemy : MonoBehaviour
     /// SHIELD VARIABLES - END
     /// 
 
+    [SerializeField] bool _canCloak;
+
     void Awake()
     {
         _anim = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
         _collider2D = GetComponent<BoxCollider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _canCloak = (Random.value > 0.5f);
+        //_canCloak = true;
+
+        _cloakingObject.SetActive(_canCloak);
     }
 
     void Start()
@@ -152,13 +161,74 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Laser") && _shieldActive) { _enemyShield.Damage(); return; }
 
-        if (other.CompareTag("Torpedo") || other.CompareTag("Laser") || other.CompareTag("Player") || other.CompareTag("Shield"))
+        if (!_canCloak)
+        {
+            if (other.CompareTag("Torpedo") || other.CompareTag("Laser") || other.CompareTag("Player") || other.CompareTag("Shield"))
+            //if (other.CompareTag("Player") || other.CompareTag("Shield"))
+            {
+                _speed = 0;
+
+                _collider2D.enabled = false; // disable collider so two lasers can not collider at the same time
+
+                if (other.CompareTag("Shield"))
+                {
+                    //Debug.Log("ENERGY EXPLOSION");
+                    _collisionWithShieldExplosionFX.SetActive(true);
+                    _spriteRenderer.enabled = false;
+                    /// Need to replace with ZAPPER
+                    _audioSource.Play();
+                    UpdateEnemyDeath();
+                }
+                else
+                {
+                    //Debug.Log("Enemy Regular explosion");
+                    //Debug.Log("Enemy destoryed by: " + other.tag);
+                    //Instantiate(_enemyInvaderExplosion, transform.position, Quaternion.identity);
+                    _anim.SetTrigger("OnEnemyDeath");
+                    _audioSource.Play();
+                }
+            }
+        }
+        else
+        {
+            if (other.CompareTag("Player") || other.CompareTag("Shield"))
+            {
+                _speed = 0;
+
+                _collider2D.enabled = false; // disable collider so two lasers can not collider at the same time
+
+                if (other.CompareTag("Shield"))
+                {
+                    //Debug.Log("ENERGY EXPLOSION");
+                    _collisionWithShieldExplosionFX.SetActive(true);
+                    _spriteRenderer.enabled = false;
+                    /// Need to replace with ZAPPER
+                    _audioSource.Play();
+                    UpdateEnemyDeath();
+                }
+                else
+                {
+                    //Debug.Log("Enemy Regular explosion");
+                    //Debug.Log("Enemy destoryed by: " + other.tag);
+                    //Instantiate(_enemyInvaderExplosion, transform.position, Quaternion.identity);
+                    _anim.SetTrigger("OnEnemyDeath");
+                    _audioSource.Play();
+                }
+            }
+        }
+
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        Debug.Log("Enemy COLLIDED with :: " + other.gameObject.tag);
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Shield"))
         {
             _speed = 0;
 
             _collider2D.enabled = false; // disable collider so two lasers can not collider at the same time
 
-            if (other.CompareTag("Shield"))
+            if (other.gameObject.CompareTag("Shield"))
             {
                 //Debug.Log("ENERGY EXPLOSION");
                 _collisionWithShieldExplosionFX.SetActive(true);
