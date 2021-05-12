@@ -1049,11 +1049,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3601855828134517582, guid: a74ec2fb8187c6141ad8c8f6ee936d3a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.172659
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3601855828134517582, guid: a74ec2fb8187c6141ad8c8f6ee936d3a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 3601855828134517582, guid: a74ec2fb8187c6141ad8c8f6ee936d3a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14277,7 +14277,7 @@ MonoBehaviour:
   waves:
   - name: Reinforcements Attack!
     enemyPrefab: {fileID: 6119608634017273475, guid: aa043528125b4b04d94521ecab216bf3, type: 3}
-    enemyCount: 5
+    enemyCount: 3
     spawnRate: 0
     delayBetweenEnemySpawns: 0.5
   - name: The Reinforcements

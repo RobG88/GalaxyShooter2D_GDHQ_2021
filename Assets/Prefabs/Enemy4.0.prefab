@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 3276191156916680361}
   - component: {fileID: 3553890333578874460}
   - component: {fileID: 399513058}
+  - component: {fileID: 1129037184}
   m_Layer: 0
   m_Name: Enemy4.0
   m_TagString: Enemy
@@ -455,6 +456,7 @@ MonoBehaviour:
   _shield: {fileID: 3553890333703009332}
   _shieldPower: 0
   _canCloak: 0
+  _isAggressive: 0
 --- !u!82 &2230311064967448474
 AudioSource:
   m_ObjectHideFlags: 0
@@ -619,6 +621,23 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.9
+--- !u!114 &1129037184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6119608634017273475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab6ee96e71647e6449f025fd3cd6c5db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  _target: {fileID: 0}
+  rangeToRam: 5
+  _canRamPlayer: 0
+  rotationSpeed: 3
 --- !u!1 &8298608039500695056
 GameObject:
   m_ObjectHideFlags: 0

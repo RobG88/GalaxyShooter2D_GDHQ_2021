@@ -71,6 +71,7 @@ public class Enemy : MonoBehaviour
     /// 
 
     [SerializeField] bool _canCloak;
+    [SerializeField] bool _isAggressive;
 
     void Awake()
     {
@@ -80,9 +81,11 @@ public class Enemy : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         _canCloak = (Random.value > 0.5f);
-        //_canCloak = true;
-
         _cloakingObject.SetActive(_canCloak);
+
+        _isAggressive = (Random.value > 0.5f);
+        _isAggressive = true;
+        _cloakingObject.SetActive(_isAggressive);
     }
 
     void Start()
@@ -154,6 +157,15 @@ public class Enemy : MonoBehaviour
     bool CheckSpawnPosition(Vector3 pos)
     {
         return (Physics.CheckSphere(pos, 0.8f));
+    }
+
+    public void RamPlayer()
+    {
+        _speed = 12f;
+        // Enable Thrusters
+
+        // If the enemy ship re-spawns then reset the speed because 
+        // the enemy ship has MISSed the PLAYER ship
     }
 
 
