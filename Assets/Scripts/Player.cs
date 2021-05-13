@@ -628,6 +628,7 @@ public class Player : MonoBehaviour
         }
 
         if (other.CompareTag("EnemyLaser")) Damage();
+        if (other.CompareTag("Rocket")) Damage();
 
         if (other.CompareTag("PowerUp"))
         {

@@ -12,6 +12,7 @@ TagManager:
   - EnemyLaser
   - Torpedo
   - EnemyShield
+  - Rocket
   layers:
   - Default
   - TransparentFX

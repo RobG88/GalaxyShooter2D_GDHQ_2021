@@ -73,6 +73,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] bool _canCloak;
     [SerializeField] bool _isAggressive;
 
+    float _playerYThreshold = -9f; // set game 'Player' Y Threshold
+    [SerializeField] bool _enemySmartBackFire;
+    [SerializeField] GameObject _enemySmartFOV;
+    [SerializeField] GameObject _enemyRocket;
+
     void Awake()
     {
         _anim = GetComponent<Animator>();
@@ -99,6 +104,15 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (_enemySmartBackFire && transform.position.y <= _playerYThreshold)
+        {
+            PlayerInSights(true);
+        }
+        else if (_enemySmartBackFire && transform.position.y > _playerYThreshold)
+        {
+            PlayerInSights(false);
+        }
+
         if (Input.GetKeyDown(KeyCode.U)) { Activate_Shields(); }
 
         CalculateMovement();
@@ -305,5 +319,16 @@ public class Enemy : MonoBehaviour
     {
         _shieldActive = false;
         _shield.SetActive(_shieldActive);
+    }
+
+    public void FireRocketAtPlayer()
+    {
+        Debug.Log("Fire homing ROCKET at Player!");
+        GameObject EnemyRocket = Instantiate(_enemyRocket, transform.position, Quaternion.identity);
+    }
+
+    void PlayerInSights(bool activateFOV)
+    {
+        _enemySmartFOV.SetActive(activateFOV);
     }
 }
