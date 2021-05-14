@@ -86,10 +86,11 @@ public class Enemy : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         _canCloak = (Random.value > 0.5f);
+        _canCloak = false;
         _cloakingObject.SetActive(_canCloak);
 
         _isAggressive = (Random.value > 0.5f);
-        _isAggressive = true;
+        _isAggressive = false;
         _cloakingObject.SetActive(_isAggressive);
     }
 
