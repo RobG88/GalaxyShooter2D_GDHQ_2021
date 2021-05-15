@@ -127,4 +127,13 @@ public class PowerUp : MonoBehaviour
     {
         return (powerUpType);
     }
+
+    public void DestroyPowerUp()
+    {
+        _spriteRenderer.enabled = false;
+        _collider2D.enabled = false;
+        _audioSource.PlayOneShot(_powerUpPickUpSFX);
+        _powerUpShieldCollisionFX.SetActive(true);
+        Destroy(this.gameObject, 0.25f);
+    }
 }

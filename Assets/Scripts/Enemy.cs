@@ -20,6 +20,14 @@ public class Enemy : MonoBehaviour
     float _tempSpeed;
     [SerializeField] GameObject _enemyLaserPrefab;
 
+    [SerializeField] Camera cam;
+    [SerializeField] LineRenderer lineRenderer;
+    [SerializeField] Transform firePoint;
+    [SerializeField] Vector2 mousePositionToWorld;
+    //[SerializeField] Transform player;
+    //[SerializeField] Transform _target;
+    public Transform target { get; private set; }
+
     [SerializeField] int _scoreValue = 0;
     //[SerializeField] GameObject _enemyInvaderExplosion;
     [SerializeField] GameObject _collisionWithShieldExplosionFX;
@@ -72,6 +80,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] bool _canCloak;
     [SerializeField] bool _isAggressive;
+    [SerializeField] bool _canDestroyPowerUps;
 
     float _playerYThreshold = -9f; // set game 'Player' Y Threshold
     [SerializeField] bool _enemySmartBackFire;
@@ -92,6 +101,10 @@ public class Enemy : MonoBehaviour
         _isAggressive = (Random.value > 0.5f);
         _isAggressive = false;
         _cloakingObject.SetActive(_isAggressive);
+
+        _canDestroyPowerUps = (Random.value > 0.5f);
+        _canDestroyPowerUps = true;
+        _cloakingObject.SetActive(_canDestroyPowerUps);
     }
 
     void Start()
@@ -128,6 +141,23 @@ public class Enemy : MonoBehaviour
             _canFire = Time.time + _fireRate;
 
             GameObject EnemyLaserShot = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (target != null)
+                EnableLaser();
+        }
+
+        if (Input.GetButton("Fire1") && target != null)
+        {
+            UpdateLaser();
+        }
+
+        if (Input.GetButtonUp("Fire1"))
+        {
+            if (target != null)
+                DisableLaser();
         }
     }
 
@@ -172,6 +202,48 @@ public class Enemy : MonoBehaviour
     bool CheckSpawnPosition(Vector3 pos)
     {
         return (Physics.CheckSphere(pos, 0.8f));
+    }
+
+    void EnableLaser()
+    {
+        lineRenderer.enabled = true;
+    }
+
+    void UpdateLaser()
+    {
+        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, -firePoint.up);
+
+        if (hitInfo)
+        {
+            //Debug.Log("Enemy Laser hit = " + hitInfo.transform.tag);
+        }
+        lineRenderer.SetPosition(0, firePoint.position);
+        lineRenderer.SetPosition(1, target.position);
+    }
+
+    void DisableLaser()
+    {
+        lineRenderer.enabled = false;
+    }
+
+
+    public void DestroyPowerUp(GameObject powerUpPosition)
+    {
+        StartCoroutine(ShootPowerUp(powerUpPosition.transform));
+        powerUpPosition.GetComponent<PowerUp>().DestroyPowerUp();
+    }
+
+    IEnumerator ShootPowerUp(Transform _powerUpTarget) // WHY??? is Raycast being used?? Is it???
+    {
+        lineRenderer.SetPosition(0, firePoint.position);
+
+        lineRenderer.SetPosition(1, _powerUpTarget.position);
+
+        lineRenderer.enabled = true;
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineRenderer.enabled = false;
     }
 
     public void RamPlayer()

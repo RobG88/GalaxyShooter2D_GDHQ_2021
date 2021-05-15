@@ -38,7 +38,7 @@ public class EnemyFOV : MonoBehaviour
 
         if (other.CompareTag("PowerUp"))
         {
-            //this.transform.parent.GetComponent<Enemy>().DestroyPowerUp(other.gameObject);
+            this.transform.parent.GetComponent<Enemy>().DestroyPowerUp(other.gameObject);
         }
 
         /*

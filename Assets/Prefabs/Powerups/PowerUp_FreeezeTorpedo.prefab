@@ -229,12 +229,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpType: 5
-  _speed: 4
+  _speed: 2
   _powerUpShieldCollisionFX: {fileID: 0}
   _powerUpPickUpSFX: {fileID: 0}
   _rotateOnYAxis: 0
   _destoryYAxisThreshold: -10
   CHEAT_LINE_THEM_UP: 1
+  player: {fileID: 0}
 --- !u!82 &1594041581020090581
 AudioSource:
   m_ObjectHideFlags: 0

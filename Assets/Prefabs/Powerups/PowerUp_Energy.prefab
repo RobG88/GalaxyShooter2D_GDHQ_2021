@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpType: 3
-  _speed: 4
+  _speed: 2
   _powerUpShieldCollisionFX: {fileID: 5615053345284984355}
   _powerUpPickUpSFX: {fileID: 8300000, guid: 9f8214028eb445346bc91016740ecd7d, type: 3}
   _rotateOnYAxis: 0
