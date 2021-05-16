@@ -24,9 +24,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Transform firePoint;
     [SerializeField] Vector2 mousePositionToWorld;
-    //[SerializeField] Transform player;
-    //[SerializeField] Transform _target;
+
+    [SerializeField] Transform player;
+    [SerializeField] Transform _target;
     public Transform target { get; private set; }
+    [SerializeField] float rangeOfWeapon;
+    [SerializeField] float rotationSpeed = 3f;
+    Vector3 laserMissVector3;
+
 
     [SerializeField] int _scoreValue = 0;
     //[SerializeField] GameObject _enemyInvaderExplosion;
@@ -81,6 +86,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] bool _canCloak;
     [SerializeField] bool _isAggressive;
     [SerializeField] bool _canDestroyPowerUps;
+    [SerializeField] bool _hasLongRangeCannon;
 
     float _playerYThreshold = -9f; // set game 'Player' Y Threshold
     [SerializeField] bool _enemySmartBackFire;
@@ -105,6 +111,12 @@ public class Enemy : MonoBehaviour
         _canDestroyPowerUps = (Random.value > 0.5f);
         _canDestroyPowerUps = true;
         _cloakingObject.SetActive(_canDestroyPowerUps);
+
+        _hasLongRangeCannon = (Random.value > 0.5f);
+        _hasLongRangeCannon = true;
+        _cloakingObject.SetActive(_hasLongRangeCannon);
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Start()
@@ -114,6 +126,8 @@ public class Enemy : MonoBehaviour
 
         _fireRate = Random.Range(.5f, 2f);
         _canFire = Time.time + _fireRate;
+
+        DisableLaser();
     }
 
     void Update()
@@ -136,13 +150,22 @@ public class Enemy : MonoBehaviour
         /// 
         if (Time.time > _canFire && WithinFiringRange() && !isFrozen)
         {
-            _fireRate = Random.Range(2f, 7f);
+            _fireRate = Random.Range(2f, 4f);
 
             _canFire = Time.time + _fireRate;
 
-            GameObject EnemyLaserShot = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+            if (_hasLongRangeCannon)
+            {
+                //TargetPlayer(); // Only for RAMMING
+                StartCoroutine(Shoot());
+            }
+            else
+            {
+                GameObject EnemyLaserShot = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+            }
         }
 
+        /*
         if (Input.GetButtonDown("Fire1"))
         {
             if (target != null)
@@ -159,6 +182,7 @@ public class Enemy : MonoBehaviour
             if (target != null)
                 DisableLaser();
         }
+        */
     }
 
     bool WithinFiringRange()
@@ -403,5 +427,85 @@ public class Enemy : MonoBehaviour
     void PlayerInSights(bool activateFOV)
     {
         _enemySmartFOV.SetActive(activateFOV);
+    }
+
+    void TargetPlayer()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (distanceToPlayer <= rangeOfWeapon)
+        {
+            target = player;
+
+            Vector3 relativeTarget = (target.transform.position - transform.position).normalized;
+            Quaternion toQuaternion = Quaternion.FromToRotation(-Vector3.up, relativeTarget);
+            transform.rotation = Quaternion.Slerp(transform.rotation, toQuaternion, rotationSpeed * Time.deltaTime);
+        }
+        else
+        {
+            target = null;
+            /* // This ELSE portion of the function is fighting with the EnemyBehavior follow script.
+             *    If the enemy does not have a TARGET then let the ENEMY BEHAVIOR script move and rotate the ship.
+            if (transform.rotation.z != 0)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, originalRotation, rotationSpeed * Time.deltaTime);
+            }
+            */
+        }
+        _target = target;
+    }
+
+
+    IEnumerator Shoot()
+    {
+        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.up);
+
+        if (hitInfo)
+        {
+            Debug.Log(hitInfo.transform.name);
+
+            lineRenderer.SetPosition(0, firePoint.position);
+
+            var laserHit = Random.Range(0, 4); // Cound have an enemy 'accuracy' attribute
+            laserHit = 0;
+
+            if (laserHit != 0) // laserHit > 0, laser missed, adjust target.position
+            {
+                float x = Random.Range(-2f, 2f);
+                float y = Random.Range(-2f, 2f);
+                float z = Random.Range(-2f, 2f);
+                laserMissVector3 = new Vector3(x, y, z);
+                Debug.Log("Laser Missed!");
+            }
+            else
+            {
+                Debug.Log("Laser Hit!");
+                laserMissVector3 = new Vector3(0, 0, 0);
+                player.GetComponent<Player>().Damage();
+            }
+
+            //lineRenderer.SetPosition(1, target.position + laserMissVector3);
+            lineRenderer.SetPosition(1, player.position + laserMissVector3);
+        }
+        else
+        {
+            lineRenderer.SetPosition(0, firePoint.position);
+            lineRenderer.SetPosition(1, firePoint.position + firePoint.up * 100);
+        }
+
+        lineRenderer.enabled = true;
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineRenderer.enabled = false;
+
+        //lineRenderer.SetPosition(0, firePoint.position);
+
+        //lineRenderer.SetPosition(1, _powerUpTarget.position);
+
+        //lineRenderer.enabled = true;
+
+        //yield return new WaitForSeconds(0.2f);
+
+        //lineRenderer.enabled = false;
     }
 }
