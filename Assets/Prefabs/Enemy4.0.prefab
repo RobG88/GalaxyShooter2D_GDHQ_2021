@@ -644,7 +644,7 @@ MonoBehaviour:
   rotationSpeed: 3
   _scoreValue: 10
   _collisionWithShieldExplosionFX: {fileID: 8299512586424006608}
-  CHEAT_LINE_THEM_UP: 1
+  CHEAT_LINE_THEM_UP: 0
   _cloakingObject: {fileID: 3553890333134897130}
   _canFire: -1
   _shieldActive: 0
@@ -652,9 +652,9 @@ MonoBehaviour:
   _shieldPower: 0
   _canCloak: 0
   _isAggressive: 0
-  _canDestroyPowerUps: 1
+  _canDestroyPowerUps: 0
   _hasLongRangeCannon: 0
-  _enemySmartBackFire: 0
+  _enemySmartBackFire: 1
   _enemySmartFOV: {fileID: 2046763566}
   _enemyRocket: {fileID: 1815994861773376968, guid: d784db08e2891b445a69e3a6f3bead6f, type: 3}
 --- !u!82 &2230311064967448474

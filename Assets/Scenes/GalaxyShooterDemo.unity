@@ -2455,6 +2455,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6119608634017273472, guid: aa043528125b4b04d94521ecab216bf3, type: 3}
+      propertyPath: CHEAT_LINE_THEM_UP
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6119608634017273473, guid: aa043528125b4b04d94521ecab216bf3, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -14569,8 +14573,8 @@ MonoBehaviour:
   _spawnState: 2
   waves:
   - name: Reinforcements Attack!
-    enemyPrefab: {fileID: 7569045904257318587, guid: 058b90bfd29350046a156a0b5526e1f4, type: 3}
-    enemyCount: 40
+    enemyPrefab: {fileID: 6119608634017273475, guid: aa043528125b4b04d94521ecab216bf3, type: 3}
+    enemyCount: 3
     spawnRate: 0
     delayBetweenEnemySpawns: 0.5
   - name: The Reinforcements
@@ -14597,7 +14601,7 @@ MonoBehaviour:
   _waveCountdown: 0
   _enemyContainer: {fileID: 1520733733}
   _powerUpPrefabs:
-  - {fileID: 7810662798046527754, guid: e9ca59404e9862b4195d40d6e8e62e49, type: 3}
+  - {fileID: 7436080386340361089, guid: 3ced28374f8d1f54a819d1eab4f3e8b7, type: 3}
   - {fileID: 2892270531928339319, guid: 9dc8cfa0d139fb346a910d53194f3f97, type: 3}
   _powerUpContainer: {fileID: 1314596240}
   _minPowerUpSpawnStart: 3

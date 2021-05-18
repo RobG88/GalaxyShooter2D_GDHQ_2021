@@ -109,11 +109,11 @@ public class Enemy : MonoBehaviour
         _cloakingObject.SetActive(_isAggressive);
 
         _canDestroyPowerUps = (Random.value > 0.5f);
-        _canDestroyPowerUps = true;
+        _canDestroyPowerUps = false;
         _cloakingObject.SetActive(_canDestroyPowerUps);
 
         _hasLongRangeCannon = (Random.value > 0.5f);
-        _hasLongRangeCannon = true;
+        _hasLongRangeCannon = false;
         _cloakingObject.SetActive(_hasLongRangeCannon);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
